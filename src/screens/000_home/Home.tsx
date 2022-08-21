@@ -18,7 +18,8 @@ const Home: React.FC<Props> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>HomeView</Text>
+      <Text style={styles.greeting}>Home</Text>
+
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
