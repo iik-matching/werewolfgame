@@ -1,12 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {RootStackParamList} from '../../../App';
 
-//画面遷移用　公式サイト参照　意味は不明
-export type HomeStackNavigatorParamList = {
-  Home: undefined;
-};
-type Props = NativeStackScreenProps<HomeStackNavigatorParamList, 'Home'>;
+//お決まり
+type Props = NativeStackScreenProps<RootStackParamList, 'Kakunin'>;
 
 const Kakunin: React.FC<Props> = ({navigation}) => {
   function Tap() {
