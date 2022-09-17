@@ -1,25 +1,25 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {RootStackParamList} from '../../../App';
 
-//画面遷移用　公式サイト参照　意味は不明
-export type HomeStackNavigatorParamList = {
-  PlayerSetting: undefined;
-};
-type Props = NativeStackScreenProps<
-  HomeStackNavigatorParamList,
-  'PlayerSetting'
->;
+//お決まり
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const Home: React.FC<Props> = ({navigation}) => {
+  //次の画面へ
   function Tap() {
-    navigation.navigate('PlayerSetting');
+    //Propsを渡しながら画面遷移
+    navigation.navigate('PlayerSetting', {
+      test1: 86,
+      test2: 'anything you want here',
+      test3: 'aiuoe',
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.greeting}>Home</Text>
-
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );

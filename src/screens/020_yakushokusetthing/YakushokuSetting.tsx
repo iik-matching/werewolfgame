@@ -1,16 +1,14 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {RootStackParamList} from '../../../App';
 
-//画面遷移用　公式サイト参照　意味は不明
-export type HomeStackNavigatorParamList = {
-  Kakunin: undefined;
-};
-type Props = NativeStackScreenProps<HomeStackNavigatorParamList, 'Kakunin'>;
+//お決まり
+type Props = NativeStackScreenProps<RootStackParamList, 'YakushokuSetting'>;
 
 const YakushokuSetting: React.FC<Props> = ({navigation}) => {
   function Tap() {
-    navigation.navigate('Kakunin');
+    navigation.navigate('Kakunin', {});
   }
 
   return (
