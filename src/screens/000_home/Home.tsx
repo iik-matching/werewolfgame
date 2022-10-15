@@ -10,11 +10,7 @@ const Home: React.FC<Props> = ({navigation}) => {
   //次の画面へ
   function Tap() {
     //Propsを渡しながら画面遷移
-    navigation.navigate('PlayerSetting', {
-      test1: 86,
-      test2: 'anything you want here',
-      test3: 'aiuoe',
-    });
+    navigation.navigate('PlayerSetting');
   }
 
   return (

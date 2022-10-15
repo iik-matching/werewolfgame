@@ -6,7 +6,10 @@ import {RootStackParamList} from '../../../App';
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'Kakunin'>;
 
-const Kakunin: React.FC<Props> = ({navigation}) => {
+const Kakunin: React.FC<Props> = ({route, navigation}) => {
+  // ここでPropsを受け取る
+  const {game} = route.params;
+
   function Tap() {
     navigation.navigate('Home');
   }

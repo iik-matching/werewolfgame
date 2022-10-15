@@ -7,16 +7,13 @@ import {RootStackParamList} from '../../../App';
 type Props = NativeStackScreenProps<RootStackParamList, 'PlayerSetting'>;
 
 const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
-  // ここでPropsを受け取る
-  const {test1, test2, test3} = route.params;
-
   function Tap() {
-    navigation.navigate('YakushokuSetting', {});
+    navigation.navigate('YakushokuSetting');
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>PlayerSettingView{test1}</Text>
+      <Text style={styles.greeting}>PlayerSettingView</Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
