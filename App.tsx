@@ -6,26 +6,19 @@ import Home from './src/screens/000_home/Home';
 import PlayerSetting from './src/screens/010_playerssetting/PlayerSetting';
 import YakushokuSetting from './src/screens/020_yakushokusetthing/YakushokuSetting';
 import Kakunin from './src/screens/030_kakunin/Kakunin';
-import {IYakushoku} from './src/interface';
+import {IYakushoku} from './src/classes/interface';
+import {GameClass} from './src/classes/GameClass';
 
 export type RootStackParamList = {
   Home: undefined;
-  PlayerSetting: PlayerSettingProps;
-  YakushokuSetting: YakushokuSettingProps;
-  Kakunin: KakuninProps;
+  PlayerSetting: undefined;
+  YakushokuSetting: undefined;
+  Kakunin: MasterProps;
 };
 
-type geme = {};
-
-type PlayerSettingProps = {
-  test1: number;
-  test2: string;
-  test3: string;
+type MasterProps = {
+  game: GameClass;
 };
-
-type YakushokuSettingProps = {};
-
-type KakuninProps = {};
 
 //const Stack = createNativeStackNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
