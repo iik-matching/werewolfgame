@@ -64,6 +64,11 @@ export class GameClass {
     }
 
     //複数人の場合　決選投票へ
+
+    this.hantei();
+
+    //インデックス初期化
+    this.nowIndex = 0;
   }
 
   yoru_shuukei() {
