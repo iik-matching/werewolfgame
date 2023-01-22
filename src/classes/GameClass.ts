@@ -10,6 +10,11 @@ export class GameClass {
 
   public testStr: string = 'test1';
 
+  //人狼陣営人数変数
+  private zinrou_num: number = 0;
+  //市民陣営人数変数
+  private simin_num: number = 0;
+
   //コンストラクタ
   constructor(players: PlayerClass[]) {
     this.players = players;
@@ -124,7 +129,34 @@ export class GameClass {
 
   //判定
   private hantei() {
+    for (var i = 0; i < this.players.length; i++) {
+      console.log(this.players[i].getIsDeath());
+      //生存している人の中で陣営人数をカウント
+      if (this.players[i].getIsDeath() == false) {
+        console.log(this.players[i].getZinnei());
+        if (this.players[i].getZinnei() == '人狼') {
+          this.zinrou_num += 1;
+        } else {
+          this.simin_num += 1;
+        }
+      }
+    }
+
+    console.log('人狼陣営人数' + this.zinrou_num);
+    console.log('市民陣営人数' + this.simin_num);
+
     //人狼陣営が市民陣営以上であれば、ゲーム終了
-    //人狼が０人であれば、ゲーム終了
+    if (this.zinrou_num >= this.simin_num) {
+      console.log('人狼の勝利！！ゲーム終了');
+    } else if (this.zinrou_num == 0) {
+      ////人狼が０人であれば、ゲーム終了
+      console.log('市民勝利！！ゲーム終了');
+    } else {
+      ////市民が人狼より多い場合引き続きゲーム再開
+      console.log('引き続きゲームは続きます。');
+    }
+
+    this.zinrou_num = 0;
+    this.simin_num = 0;
   }
 }
