@@ -11,31 +11,8 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
 
   function Tap() {
-    navigation.navigate('Home');
-
-    //
-    //Gameの動いている様子を見る
-    //
-
-    //投票
-    game.asa('Bさん');
-    game.asa('Aさん');
-    game.asa('Aさん');
-    game.asa('Aさん');
-
-    //集計
-    game.shukei();
-
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-
-    game.yoru_shuukei();
-
-    //夜の集計1
-    //判定処理2
-    //死んだ人の行動制限3
+    //アクション画面に移動
+    navigation.navigate('Action', {game});
   }
 
   return (
