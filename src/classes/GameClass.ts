@@ -70,6 +70,7 @@ export class GameClass {
 
     //複数人の場合　決選投票へ
 
+    //判定処理
     this.hantei();
 
     //インデックス初期化
@@ -116,10 +117,16 @@ export class GameClass {
       }
     }
 
+    //判定処理
     this.hantei();
 
     //インデックス初期化
     this.nowIndex = 0;
+
+    //投票数の初期化
+    for (var i = 0; i < this.players.length; i++) {
+      this.players[i].countInitialize();
+    }
   }
 
   //判定

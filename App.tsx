@@ -12,12 +12,16 @@ import {GameClass} from './src/classes/GameClass';
 export type RootStackParamList = {
   Home: undefined;
   PlayerSetting: undefined;
-  YakushokuSetting: undefined;
+  YakushokuSetting: PlayerNames;
   Kakunin: MasterProps;
 };
 
 type MasterProps = {
   game: GameClass;
+};
+
+type PlayerNames = {
+  PlayerNames: string[];
 };
 
 //const Stack = createNativeStackNavigator();

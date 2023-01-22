@@ -53,6 +53,9 @@ export class PlayerClass {
 
   countInitialize() {
     this.count = 0;
+    this.uranaiFlag = false;
+    this.kishiFlag = false;
+    this.shuugekiFlag = false;
   }
 
   changeIsDeath(flag: boolean) {
