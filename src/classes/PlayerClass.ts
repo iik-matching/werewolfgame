@@ -19,6 +19,10 @@ export class PlayerClass {
     return this.yakushoku;
   }
 
+  getZinnei(): string {
+    return this.yakushoku.getZinnei();
+  }
+
   getName() {
     return this.name;
   }

@@ -31,9 +31,11 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
     game.yoru('Aさん');
     game.yoru('Aさん');
 
-    //判定処理
-    //夜の集計
-    //死んだ人の行動制限
+    game.yoru_shuukei();
+
+    //夜の集計1
+    //判定処理2
+    //死んだ人の行動制限3
   }
 
   return (

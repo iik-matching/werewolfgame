@@ -73,10 +73,43 @@ export class GameClass {
 
   yoru_shuukei() {
     //人狼が襲撃に成功したかどうか
+    for (var i = 0; i < this.players.length; i++) {
+      //人狼に襲撃された場合
+      if (this.players[i].getShuugekiFlag() == true) {
+        console.log(`${this.players[i].getName()}が襲撃されました。`);
+        //騎士に守られなかった場合
+        if (this.players[i].getKishiFlag() == false) {
+        } else {
+          console.log('騎士が守りました。');
+        }
+      }
 
-    //誰が怪しまれています。
+      if (this.players[i].getUranaiFrag() == true) {
+        console.log(
+          `${this.players[i].getName()}は${this.players[
+            i
+          ].getZinnei()}陣営です。`,
+        );
+      }
+    }
+
+    //○○さんが怪しまれています。
+    var maxCount: number = 0;
+    for (var i = 0; i < this.players.length; i++) {
+      if (this.players[i].getCount() >= maxCount) {
+        maxCount = this.players[i].getCount();
+      }
+    }
+    for (var i = 0; i < this.players.length; i++) {
+      if (this.players[i].getCount() == maxCount) {
+        console.log(`${this.players[i].getName()}は怪しまれています。`);
+      }
+    }
 
     this.hantei();
+
+    //インデックス初期化
+    this.nowIndex = 0;
   }
 
   //判定
