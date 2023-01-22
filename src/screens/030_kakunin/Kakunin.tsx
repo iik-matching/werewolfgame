@@ -19,48 +19,8 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
 
   function Tap() {
-    //ゲームを作成し、次の画面に渡す
-    var arr = [
-      new JinrouClass(),
-      new KishiClass(),
-      new UranaishiClass(),
-      new ShiminClass(),
-    ];
-
-    arr = shuffle(arr);
-
-    navigation.navigate('conglaturation', {
-      game: new GameClass([
-        new PlayerClass('Aさん', arr[0]),
-        new PlayerClass('Bさん', arr[1]),
-        new PlayerClass('Cさん', arr[2]),
-        new PlayerClass('Dさん', arr[3]),
-      ]),
-    });
-
-    //
-    //Gameの動いている様子を見る
-    //
-
-    //投票
-    game.asa('Bさん');
-    game.asa('Aさん');
-    game.asa('Aさん');
-    game.asa('Aさん');
-
-    //集計
-    game.shukei();
-
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-    game.yoru('Aさん');
-
-    game.yoru_shuukei();
-
-    //夜の集計1
-    //判定処理2
-    //死んだ人の行動制限3
+    //アクション画面に移動
+    navigation.navigate('Action', {game});
   }
 
   const shuffle = ([...array]) => {
