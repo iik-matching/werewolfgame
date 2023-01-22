@@ -1,14 +1,26 @@
 import {PlayerClass} from './PlayerClass';
+import {GameConst} from '../const';
 
 //ゲームクラス
 export class GameClass {
   //プレイヤー
-  private players: PlayerClass[] = [];
+  public players: PlayerClass[] = [];
 
   //今プレイしているプレイヤーのインデックス
-  private nowIndex: number = 0;
+  public nowIndex: number = 0;
 
   public testStr: string = 'test1';
+
+
+  //人狼陣営人数変数
+  private zinrou_num: number = 0;
+  //市民陣営人数変数
+  private simin_num: number = 0;
+
+  //アクション済みのプレイヤー人数
+  public DidActionCount: number = 0;
+  //朝か夜
+  public AsaOrYoru: string = GameConst.ASA;
 
   //コンストラクタ
   constructor(players: PlayerClass[]) {
@@ -20,10 +32,24 @@ export class GameClass {
     this.players.push(player);
   }
 
+  //アクション済みの人数をカウントする
+  didActionCount() {
+    this.DidActionCount++;
+  }
+
+  //アクション済みの人数を取得する
+  getDidActionCount() {
+    return this.DidActionCount;
+  }
+
+  //全てのプレイヤーがアクション済みかの判定
+  compareDidActionCountToPlayersCount(): boolean {
+    return this.DidActionCount >= this.players.length;
+  }
+
   //朝のアクション
   asa(tName: string) {
     if (!this.players[this.nowIndex].getIsDeath()) {
-      console.log('isDeath', this.players[this.nowIndex].getIsDeath());
       this.players[this.nowIndex].getYakushoku().vote(this.players, tName);
     }
     this.nowIndex++;
