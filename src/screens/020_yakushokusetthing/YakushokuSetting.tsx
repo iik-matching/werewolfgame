@@ -46,7 +46,11 @@ const YakushokuSetting: React.FC<Props> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>YakushokuSettingView</Text>
+      <Text style={styles.greeting}>役職設定</Text>
+      <Text style={styles.greeting}>人狼:１</Text>
+      <Text style={styles.greeting}>市民:１</Text>
+      <Text style={styles.greeting}>騎士：１</Text>
+      <Text style={styles.greeting}>占い師:１</Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );

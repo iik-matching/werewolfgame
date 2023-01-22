@@ -27,13 +27,18 @@ export class GameClass {
 
   //朝のアクション
   asa(tName: string) {
-    this.players[this.nowIndex].getYakushoku().vote(this.players, tName);
+    if (!this.players[this.nowIndex].getIsDeath()) {
+      console.log('isDeath', this.players[this.nowIndex].getIsDeath());
+      this.players[this.nowIndex].getYakushoku().vote(this.players, tName);
+    }
     this.nowIndex++;
   }
 
   //夜のアクション
   yoru(tName: string) {
-    this.players[this.nowIndex].getYakushoku().action(this.players, tName);
+    if (!this.players[this.nowIndex].getIsDeath()) {
+      this.players[this.nowIndex].getYakushoku().action(this.players, tName);
+    }
     this.nowIndex++;
   }
 
@@ -74,6 +79,11 @@ export class GameClass {
 
     //インデックス初期化
     this.nowIndex = 0;
+
+    //投票数の初期化
+    for (var i = 0; i < this.players.length; i++) {
+      this.players[i].countInitialize();
+    }
   }
 
   yoru_shuukei() {

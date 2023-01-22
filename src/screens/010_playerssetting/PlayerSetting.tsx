@@ -13,7 +13,11 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>PlayerSettingView</Text>
+      <Text style={styles.greeting}>プレイヤーの設定</Text>
+      <Text style={styles.greeting}>Aさん</Text>
+      <Text style={styles.greeting}>Bさん</Text>
+      <Text style={styles.greeting}>Cさん</Text>
+      <Text style={styles.greeting}>Dさん</Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
