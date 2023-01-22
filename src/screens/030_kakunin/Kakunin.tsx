@@ -40,7 +40,7 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>Kakunin</Text>
+      <Text style={styles.greeting}>あなたはこの役職ですか？</Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
