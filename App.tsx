@@ -6,6 +6,8 @@ import Home from './src/screens/000_home/Home';
 import PlayerSetting from './src/screens/010_playerssetting/PlayerSetting';
 import YakushokuSetting from './src/screens/020_yakushokusetthing/YakushokuSetting';
 import Kakunin from './src/screens/030_kakunin/Kakunin';
+import conglaturation from './src/screens/050_conglaturation/conglaturation';
+import Action from './src/screens/040_action/Action';
 import {IYakushoku} from './src/classes/interface';
 import {GameClass} from './src/classes/GameClass';
 
@@ -14,6 +16,8 @@ export type RootStackParamList = {
   PlayerSetting: undefined;
   YakushokuSetting: PlayerNames;
   Kakunin: MasterProps;
+  conglaturation: MasterProps;
+  Action: MasterProps;
 };
 
 type MasterProps = {
@@ -35,6 +39,8 @@ const App = () => {
         <Stack.Screen name="PlayerSetting" component={PlayerSetting} />
         <Stack.Screen name="YakushokuSetting" component={YakushokuSetting} />
         <Stack.Screen name="Kakunin" component={Kakunin} />
+        <Stack.Screen name="conglaturation" component={conglaturation} />
+        <Stack.Screen name="Action" component={Action} />
       </Stack.Navigator>
     </NavigationContainer>
   );
