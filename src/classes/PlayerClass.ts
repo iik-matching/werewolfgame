@@ -19,6 +19,10 @@ export class PlayerClass {
     return this.yakushoku;
   }
 
+  getZinnei(): string {
+    return this.yakushoku.getZinnei();
+  }
+
   getName() {
     return this.name;
   }
@@ -45,6 +49,13 @@ export class PlayerClass {
 
   countUp() {
     this.count++;
+  }
+
+  countInitialize() {
+    this.count = 0;
+    this.uranaiFlag = false;
+    this.kishiFlag = false;
+    this.shuugekiFlag = false;
   }
 
   changeIsDeath(flag: boolean) {

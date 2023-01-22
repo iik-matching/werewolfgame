@@ -44,6 +44,10 @@ abstract class YakushokuBaseClass implements IYakushoku {
   getName(): string {
     return this.name;
   }
+
+  getZinnei(): string {
+    return this.zinnei;
+  }
 }
 
 export class ShiminClass extends YakushokuBaseClass {
