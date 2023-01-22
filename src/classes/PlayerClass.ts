@@ -47,6 +47,10 @@ export class PlayerClass {
     this.count++;
   }
 
+  countInitialize() {
+    this.count = 0;
+  }
+
   changeIsDeath(flag: boolean) {
     this.isDeath = flag;
   }
