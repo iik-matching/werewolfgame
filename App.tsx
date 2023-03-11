@@ -41,7 +41,7 @@ const App = () => {
         <Stack.Screen name="PlayerSetting" component={PlayerSetting} />
         <Stack.Screen name="YakushokuSetting" component={YakushokuSetting} />
         <Stack.Screen name="Kakunin" component={Kakunin} />
-        <Stack.Screen name="conglaturation" component={Conglaturation} />
+        <Stack.Screen name="Conglaturation" component={Conglaturation} />
         <Stack.Screen name="Action" component={Action} />
         <Stack.Screen name="ActionResult" component={ActionResult} />
       </Stack.Navigator>

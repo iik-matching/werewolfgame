@@ -36,6 +36,10 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
       game.AsaOrYoru = GameConst.ASA;
     }
   }, []);
+
+  console.log('朝殺された人', game.asa_dethplayer);
+  console.log('夜殺された人', game.yoru_dethplayer);
+
   return (
     <SafeAreaView style={styles.container}>
       {game.AsaOrYoru == GameConst.ASA ? (
@@ -43,7 +47,7 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
           <Text style={styles.text}>アクション結果画面</Text>
           <Text style={styles.text}></Text>
           <Text style={styles.text}>吊られたのは、、、</Text>
-          <Text style={styles.text}>○○さんでした。</Text>
+          <Text style={styles.text}>{`${game.asa_dethplayer}でした。`}</Text>
           <Text style={styles.text}></Text>
           <Text style={styles.text}>恐ろしい夜、やってきます。</Text>
         </>
@@ -54,7 +58,7 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
           <Text style={styles.text}>コケコッコー</Text>
           <Text style={styles.text}></Text>
           <Text style={styles.text}>昨晩の犠牲者は、、、</Text>
-          <Text style={styles.text}>○○さんでした。</Text>
+          <Text style={styles.text}>{`${game.yoru_dethplayer}でした。`}</Text>
         </>
       )}
 

@@ -13,6 +13,9 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   const Tap = (tName: string) => {
     game.didActionCount();
+    //死んだ人の初期化
+    game.asa_dethplayer = '';
+    game.yoru_dethplayer = 'いません';
     if (game.AsaOrYoru === GameConst.ASA) {
       console.log('朝のアクションを実行');
       game.asa(tName);
@@ -21,13 +24,19 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.yoru(tName);
     }
 
+    //全てのプレイヤーがアクション済みの場合
     if (game.compareDidActionCountToPlayersCount()) {
       if (game.AsaOrYoru === GameConst.ASA) {
         game.shukei();
       } else {
         game.yoru_shuukei();
       }
-      navigation.navigate('ActionResult', {game});
+      //ゲームが終了したら「conglatutaionへ遷移」
+      if (game.gameendflag != '0') {
+        navigation.navigate('Conglaturation', {game});
+      } else {
+        navigation.navigate('ActionResult', {game});
+      }
     } else {
       navigation.navigate('Kakunin', {game});
     }
