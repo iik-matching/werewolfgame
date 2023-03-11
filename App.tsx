@@ -19,7 +19,7 @@ export type RootStackParamList = {
   Kakunin: MasterProps;
   conglaturation: MasterProps;
   Action: MasterProps;
-  ActionResult: undefined;
+  ActionResult: MasterProps;
 };
 
 type MasterProps = {

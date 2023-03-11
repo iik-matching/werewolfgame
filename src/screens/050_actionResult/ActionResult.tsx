@@ -15,14 +15,19 @@ import {RootStackParamList} from '../../../App';
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'ActionResult'>;
 
-const ActionResult: React.FC<Props> = ({navigation}) => {
+const ActionResult: React.FC<Props> = ({route, navigation}) => {
+  // ここでPropsを受け取る
+  const {game} = route.params;
+
   function Tap() {
-    navigation.navigate('Home');
+    navigation.navigate('Kakunin', {
+      game,
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>プレイヤーの設定</Text>
+      <Text style={styles.text}>アクション結果画面</Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
