@@ -4,9 +4,9 @@ import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
 
 //お決まり
-type Props = NativeStackScreenProps<RootStackParamList, 'conglaturation'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Conglaturation'>;
 
-const conglaturation: React.FC<Props> = ({route, navigation}) => {
+const Conglaturation: React.FC<Props> = ({route, navigation}) => {
   // ここでPropsを受け取る
   const {game} = route.params;
 
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default conglaturation;
+export default Conglaturation;

@@ -11,7 +11,6 @@ export class GameClass {
 
   public testStr: string = 'test1';
 
-
   //人狼陣営人数変数
   private zinrou_num: number = 0;
   //市民陣営人数変数
@@ -22,9 +21,12 @@ export class GameClass {
   //朝か夜
   public AsaOrYoru: string = GameConst.ASA;
 
+  public alivePlayerCount: number = 0;
+
   //コンストラクタ
   constructor(players: PlayerClass[]) {
     this.players = players;
+    this.alivePlayerCount = this.players.length;
   }
 
   //プレイヤー追加
@@ -44,7 +46,7 @@ export class GameClass {
 
   //全てのプレイヤーがアクション済みかの判定
   compareDidActionCountToPlayersCount(): boolean {
-    return this.DidActionCount >= this.players.length;
+    return this.DidActionCount >= this.alivePlayerCount;
   }
 
   //朝のアクション
@@ -91,6 +93,8 @@ export class GameClass {
     if (tIndexs.length == 1) {
       //死刑執行
       this.players[tIndexs[0]].changeIsDeath(true);
+      this.players[tIndexs[0]].changePublicResultFlag(true);
+      this.alivePlayerCount--;
       console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
     }
 
@@ -106,6 +110,9 @@ export class GameClass {
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
+
+    //アクション済みのアカウント数
+    this.DidActionCount = 0;
   }
 
   yoru_shuukei() {
@@ -153,6 +160,9 @@ export class GameClass {
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
+
+    //アクション済みのアカウント数
+    this.DidActionCount = 0;
   }
 
   //判定

@@ -19,8 +19,13 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
 
   function Tap() {
-    //アクション画面に移動
-    navigation.navigate('Action', {game});
+    if (game.players[game.nowIndex].getPublicResultFlg()) {
+      game.players[game.nowIndex].changePublicResultFlag(false);
+      navigation.navigate('PublicYakushoku', {game});
+    } else {
+      //アクション画面に移動
+      navigation.navigate('Action', {game});
+    }
   }
 
   const shuffle = ([...array]) => {

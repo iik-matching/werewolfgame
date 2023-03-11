@@ -5,44 +5,32 @@ import {RootStackParamList} from '../../../App';
 import {ExtentionMessageConst, GameConst} from '../../const';
 
 //お決まり
-type Props = NativeStackScreenProps<RootStackParamList, 'Action'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'PublicYakushoku'>;
 
-const Action: React.FC<Props> = ({route, navigation}) => {
+const PublicYakushoku: React.FC<Props> = ({route, navigation}) => {
   // ここでPropsを受け取る
   const {game} = route.params;
-  const buttonList = [];
+  const YakuhokuList = [];
 
   for (const [i, player] of game.players.entries()) {
-    if (player !== game.players[game.nowIndex] && !player.getIsDeath()) {
-      buttonList.push(
-        <Button
-          key={i}
-          title={game.players[i].getName()}
-          onPress={() => Tap(game.players[i].getName())}
-        />,
-      );
-    }
+    var name: string = player.getName();
+    console.log('name', name);
+
+    YakuhokuList.push(
+      <Text key={i} style={styles.greeting}>{`${name}：${game.players[i]
+        .getYakushoku()
+        .getName()}`}</Text>,
+    );
+    console.log;
   }
 
-  const Tap = (tName: string) => {
-    if (game.AsaOrYoru === GameConst.ASA) {
-      game.asa(tName);
-      game.didActionCount();
-    } else {
-      game.yoru(tName);
-      game.didActionCount();
-    }
+  const Tap = () => {
+    game.didActionCount();
+    game.nowIndex++;
 
     if (game.compareDidActionCountToPlayersCount()) {
       game.shukei();
       navigation.navigate('ActionResult', {game});
-    } else if (game.players[game.nowIndex].getIsDeath()) {
-      if (game.players[game.nowIndex].getPublicResultFlg()) {
-        navigation.navigate('Kakunin', {game});
-      } else {
-        game.nowIndex++;
-        navigation.navigate('Kakunin', {game});
-      }
     } else {
       navigation.navigate('Kakunin', {game});
     }
@@ -56,8 +44,9 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>{ExtentionMessageConst.SIMIN}</Text>
-      {buttonList}
+      <Text style={styles.greeting}>各プレイヤーの役職内訳</Text>
+      {YakuhokuList}
+      <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
 };
@@ -75,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Action;
+export default PublicYakushoku;

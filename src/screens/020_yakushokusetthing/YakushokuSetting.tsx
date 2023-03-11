@@ -25,6 +25,7 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
       new KishiClass(),
       new UranaishiClass(),
       new ShiminClass(),
+      new ShiminClass(),
     ];
 
     arr = shuffle(arr);
@@ -35,6 +36,7 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
         new PlayerClass('Bさん', arr[1]),
         new PlayerClass('Cさん', arr[2]),
         new PlayerClass('Dさん', arr[3]),
+        new PlayerClass('Eさん', arr[4]),
       ]),
     });
   }

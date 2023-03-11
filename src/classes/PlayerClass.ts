@@ -9,6 +9,7 @@ export class PlayerClass {
   private uranaiFlag: boolean = false;
   private kishiFlag: boolean = false;
   private shuugekiFlag: boolean = false;
+  private publicResultFlag: boolean = false;
 
   constructor(name: string, yakushoku: IYakushoku) {
     this.name = name;
@@ -46,6 +47,9 @@ export class PlayerClass {
   getShuugekiFlag() {
     return this.shuugekiFlag;
   }
+  getPublicResultFlg() {
+    return this.publicResultFlag;
+  }
 
   countUp() {
     this.count++;
@@ -72,5 +76,9 @@ export class PlayerClass {
 
   changeShuugekiFlag(flag: boolean) {
     this.shuugekiFlag = flag;
+  }
+
+  changePublicResultFlag(flag: boolean) {
+    this.publicResultFlag = flag;
   }
 }
