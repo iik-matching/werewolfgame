@@ -31,10 +31,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     } else {
       navigation.navigate('Kakunin', {game});
     }
-
-    //
-    //Gameの動いている様子を見る
-    //
   };
 
   //「朝or夜」＆役職ごとに定型分を切り替える

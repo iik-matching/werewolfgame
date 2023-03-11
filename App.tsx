@@ -9,8 +9,8 @@ import Kakunin from './src/screens/030_kakunin/Kakunin';
 import Action from './src/screens/040_action/Action';
 import {IYakushoku} from './src/classes/interface';
 import {GameClass} from './src/classes/GameClass';
-import ActionResult from './src/screens/060_actionResult/ActionResult';
 import Conglaturation from './src/screens/990_conglaturation/Conglaturation';
+import ActionResult from './src/screens/050_actionResult/ActionResult';
 
 export type RootStackParamList = {
   Home: undefined;
