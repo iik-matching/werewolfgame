@@ -36,9 +36,18 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
     return array;
   };
 
+  console.log(
+    'game.players[game.nowIndex].getName()',
+    game.players[game.nowIndex].getName(),
+  );
+  console.log('game.AsaOrYoru', game.AsaOrYoru);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>Kakunin</Text>
+      <Text style={styles.greeting}>確認画面</Text>
+      <Text style={styles.greeting}>
+        {`あなたは${game.players[game.nowIndex].getName()}ですか？`}
+      </Text>
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );

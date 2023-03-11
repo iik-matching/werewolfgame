@@ -6,10 +6,10 @@ import Home from './src/screens/000_home/Home';
 import PlayerSetting from './src/screens/010_playerssetting/PlayerSetting';
 import YakushokuSetting from './src/screens/020_yakushokusetthing/YakushokuSetting';
 import Kakunin from './src/screens/030_kakunin/Kakunin';
-import Conglaturation from './src/screens/990_conglaturation/Conglaturation';
 import Action from './src/screens/040_action/Action';
 import {IYakushoku} from './src/classes/interface';
 import {GameClass} from './src/classes/GameClass';
+import Conglaturation from './src/screens/990_conglaturation/Conglaturation';
 import ActionResult from './src/screens/050_actionResult/ActionResult';
 import PublicYakushoku from './src/screens/060_publicYakushoku/PublicYakushoku';
 
