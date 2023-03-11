@@ -11,7 +11,6 @@ export class GameClass {
 
   public testStr: string = 'test1';
 
-
   //人狼陣営人数変数
   private zinrou_num: number = 0;
   //市民陣営人数変数
@@ -101,6 +100,7 @@ export class GameClass {
 
     //インデックス初期化
     this.nowIndex = 0;
+    this.DidActionCount = 0;
 
     //投票数の初期化
     for (var i = 0; i < this.players.length; i++) {
@@ -116,6 +116,8 @@ export class GameClass {
         console.log(`${this.players[i].getName()}が襲撃されました。`);
         //騎士に守られなかった場合
         if (this.players[i].getKishiFlag() == false) {
+          console.log('騎士が外しました。');
+          this.players[i].changeIsDeath(true);
         } else {
           console.log('騎士が守りました。');
         }
@@ -165,10 +167,9 @@ export class GameClass {
     var gameendflag: string = '0';
 
     for (var i = 0; i < this.players.length; i++) {
-      console.log(this.players[i].getIsDeath());
+      console.log(this.players[i].getZinnei(), this.players[i].getIsDeath());
       //生存している人の中で陣営人数をカウント
       if (this.players[i].getIsDeath() == false) {
-        console.log(this.players[i].getZinnei());
         if (this.players[i].getZinnei() == '人狼') {
           zinrou_num += 1;
         } else {
