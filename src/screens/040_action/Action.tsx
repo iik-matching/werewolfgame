@@ -27,10 +27,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     }
 
     console.log('game', game);
-
-    //
-    //Gameの動いている様子を見る
-    //
   };
 
   return (
