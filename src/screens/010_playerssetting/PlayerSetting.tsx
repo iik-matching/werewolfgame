@@ -70,7 +70,7 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
       <Text style={styles.text}>プレイヤーの設定</Text>
       <ScrollView style={styles.scrollView}>
         {isNames.map((name, i) => (
-          <View style={styles.row}>
+          <View key={i} style={styles.row}>
             <TextInput
               style={[styles.text, styles.rowtext]}
               onChangeText={str => onChange(str, i)}
