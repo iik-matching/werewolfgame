@@ -118,16 +118,25 @@ export class GameClass {
     this.hantei();
 
     //インデックス初期化
-    this.nowIndex = 0;
+    //インデックス初期化
+    var nextStartIndex: number = 0;
+    for (var i = 0; i < this.players.length; i++) {
+      if (
+        this.players[i].getIsDeath() == false ||
+        this.players[i].getPublicResultFlg()
+      ) {
+        nextStartIndex = i;
+        break;
+      }
+    }
+    this.nowIndex = nextStartIndex;
+    //アクション済みのアカウント数
     this.DidActionCount = 0;
 
     //投票数の初期化
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    //アクション済みのアカウント数
-    this.DidActionCount = 0;
   }
 
   yoru_shuukei() {
@@ -140,6 +149,7 @@ export class GameClass {
         if (this.players[i].getKishiFlag() == false) {
           console.log('騎士が外しました。');
           this.players[i].changeIsDeath(true);
+          this.players[i].changePublicResultFlag(true);
           this.yoru_dethplayer = this.players[i].getName();
         } else {
           console.log('騎士が守りました。');
@@ -172,15 +182,24 @@ export class GameClass {
     this.hantei();
 
     //インデックス初期化
-    this.nowIndex = 0;
+    var nextStartIndex: number = 0;
+    for (var i = 0; i < this.players.length; i++) {
+      if (
+        this.players[i].getIsDeath() == false ||
+        this.players[i].getPublicResultFlg()
+      ) {
+        nextStartIndex = i;
+        break;
+      }
+    }
+    this.nowIndex = nextStartIndex;
+    //アクション済みのアカウント数
+    this.DidActionCount = 0;
 
     //投票数の初期化
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    //アクション済みのアカウント数
-    this.DidActionCount = 0;
   }
 
   //判定

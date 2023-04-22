@@ -30,6 +30,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   };
 
   const Tap = (tName: string) => {
+    console.log(
+      game.players[game.nowIndex].getName(),
+      'がアクション実行！！！！！！！！！！！！！！！',
+    );
     //死んだ人の初期化
     game.asa_dethplayer = '';
     game.yoru_dethplayer = 'いません';
@@ -57,8 +61,12 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       }
     } else {
       /// 次の画面が確認画面の場合
+      console.log('check1');
       if (game.players[game.nowIndex].getIsDeath()) {
+        console.log(game.players[game.nowIndex].getName());
+        console.log('check2');
         if (!game.players[game.nowIndex].getPublicResultFlg()) {
+          console.log('check3');
           game.nowIndex++;
         }
       }
@@ -136,6 +144,9 @@ const Action: React.FC<Props> = ({route, navigation}) => {
             {`あなたは「${game.players[game.nowIndex]
               .getYakushoku()
               .getName()}」です。`}
+          </Text>
+          <Text style={styles.greetingYoru}>
+            {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
           </Text>
           <Text style={styles.greetingYoru}>{message}</Text>
           {buttonList}
