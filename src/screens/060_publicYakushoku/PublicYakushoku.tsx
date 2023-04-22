@@ -25,7 +25,6 @@ const PublicYakushoku: React.FC<Props> = ({route, navigation}) => {
   }
 
   const Tap = () => {
-    game.didActionCount();
     game.nowIndex++;
 
     if (game.compareDidActionCountToPlayersCount()) {
