@@ -23,6 +23,11 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       );
     }
   }
+  const TestFunc = () => {
+    // 最後の人の場合
+    if (game.compareDidActionCountToPlayersCount()) {
+    }
+  };
 
   const Tap = (tName: string) => {
     //死んだ人の初期化
@@ -37,49 +42,53 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.yoru(tName);
       game.didActionCount();
     }
-
-    //全てのプレイヤーがアクション済みの場合
-    console.log('チェック１');
     if (game.compareDidActionCountToPlayersCount()) {
-      console.log('チェック２');
-
+      /// 次の画面がアクションリザルト画面の場合
       if (game.AsaOrYoru === GameConst.ASA) {
-        console.log('チェック3');
-
         game.shukei();
       } else {
-        console.log('チェック４');
-
         game.yoru_shuukei();
       }
-      //ゲームが終了したら「conglatutaionへ遷移」
       if (game.gameendflag != '0') {
-        console.log('チェック５');
-
+        /// 次の画面がコングラッチュレーション画面の場合
         navigation.navigate('Conglaturation', {game});
       } else {
-        console.log('チェック６');
-
         navigation.navigate('ActionResult', {game});
       }
-    } else if (game.players[game.nowIndex].getIsDeath()) {
-      console.log('チェック７');
-
-      if (game.players[game.nowIndex].getPublicResultFlg()) {
-        console.log('チェック８');
-
-        navigation.navigate('Kakunin', {game});
-      } else {
-        console.log('チェック９');
-
-        game.nowIndex++;
-        navigation.navigate('Kakunin', {game});
-      }
     } else {
-      console.log('チェック１０');
-
+      /// 次の画面が確認画面の場合
+      if (game.players[game.nowIndex].getIsDeath()) {
+        if (!game.players[game.nowIndex].getPublicResultFlg()) {
+          game.nowIndex++;
+        }
+      }
       navigation.navigate('Kakunin', {game});
     }
+
+    // //全てのプレイヤーがアクション済みの場合
+    // console.log('チェック１');
+    // if (game.compareDidActionCountToPlayersCount()) {
+    //   console.log('チェック２');
+    //   if (game.AsaOrYoru === GameConst.ASA) {
+    //     console.log('チェック3');
+    //     game.shukei();
+    //   } else {
+    //     console.log('チェック４');
+    //     game.yoru_shuukei();
+    //   }
+    //   //ゲームが終了したら「conglatutaionへ遷移」
+    //   if (game.gameendflag != '0') {
+    //     console.log('チェック５');
+    //     navigation.navigate('Conglaturation', {game});
+    //   } else {
+    //     console.log('チェック６');
+    //     navigation.navigate('ActionResult', {game});
+    //   }
+    // } else if (game.players[game.nowIndex].getIsDeath()) {
+    // } else {
+    //   console.log('チェック１０');
+    //   navigation.navigate('Kakunin', {game});
+    // }
   };
 
   //「朝or夜」＆役職ごとに定型分を切り替える
@@ -111,14 +120,27 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>{`ステータス【${game.AsaOrYoru}】`}</Text>
-      <Text style={styles.greeting}>
-        {`あなたは「${game.players[game.nowIndex]
-          .getYakushoku()
-          .getName()}」です。`}
-      </Text>
-      <Text style={styles.greeting}>{message}</Text>
-      {buttonList}
+      {game.AsaOrYoru == GameConst.ASA ? (
+        <View style={styles.backColorAsa}>
+          <Text style={styles.greetingAsa}>{`ステータス【朝】`}</Text>
+          <Text style={styles.greetingAsa}>
+            {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
+          </Text>
+          <Text style={styles.greetingAsa}>{message}</Text>
+          {buttonList}
+        </View>
+      ) : (
+        <View style={styles.backColorYoru}>
+          <Text style={styles.greetingYoru}>{`ステータス【夜】`}</Text>
+          <Text style={styles.greetingYoru}>
+            {`あなたは「${game.players[game.nowIndex]
+              .getYakushoku()
+              .getName()}」です。`}
+          </Text>
+          <Text style={styles.greetingYoru}>{message}</Text>
+          {buttonList}
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -126,14 +148,30 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  backColorAsa: {
+    backgroundColor: '#96F1FF',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  greeting: {
+  backColorYoru: {
+    backgroundColor: '#57585A',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  greetingAsa: {
     fontSize: 20,
     fontWeight: 'bold',
     margin: 16,
+    color: 'black',
+  },
+  greetingYoru: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 16,
+    color: 'white',
   },
 });
-
 export default Action;
