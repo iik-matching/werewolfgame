@@ -125,6 +125,11 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
       return array;
     };
     yakushokuArr = shuffle(yakushokuArr);
+    // yakushokuArr = [];
+    // yakushokuArr.push(new ShiminClass());
+    // yakushokuArr.push(new JinrouClass());
+    // yakushokuArr.push(new KishiClass());
+    // yakushokuArr.push(new UranaishiClass());
 
     //プレイヤーを作成
     let players = [];

@@ -27,14 +27,14 @@ export class GameClass {
   //アクション済みのプレイヤー人数
   public DidActionCount: number = 0;
   //朝か夜
-  public AsaOrYoru: string = GameConst.ASA;
+  public AsaOrYoru: string = GameConst.YORU;
 
-  public alivePlayerCount: number = 0;
+  public canActionPlayerCount: number = 0;
 
   //コンストラクタ
   constructor(players: PlayerClass[]) {
     this.players = players;
-    this.alivePlayerCount = this.players.length;
+    this.canActionPlayerCount = this.players.length;
   }
 
   //プレイヤー追加
@@ -52,11 +52,15 @@ export class GameClass {
     return this.DidActionCount;
   }
 
+  decrementCanAction() {
+    this.canActionPlayerCount--;
+  }
+
   //全てのプレイヤーがアクション済みかの判定
   compareDidActionCountToPlayersCount(): boolean {
     console.log('DidActionCount', this.DidActionCount);
-    console.log('alivePlayerCount', this.alivePlayerCount);
-    return this.DidActionCount >= this.alivePlayerCount;
+    console.log('canActionPlayerCount', this.canActionPlayerCount);
+    return this.DidActionCount >= this.canActionPlayerCount;
   }
 
   //朝のアクション
@@ -104,7 +108,6 @@ export class GameClass {
       //死刑執行
       this.players[tIndexs[0]].changeIsDeath(true);
       this.players[tIndexs[0]].changePublicResultFlag(true);
-      this.alivePlayerCount--;
       console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
       this.asa_dethplayer = this.players[tIndexs[0]].getName();
     }
@@ -115,16 +118,25 @@ export class GameClass {
     this.hantei();
 
     //インデックス初期化
-    this.nowIndex = 0;
+    //インデックス初期化
+    var nextStartIndex: number = 0;
+    for (var i = 0; i < this.players.length; i++) {
+      if (
+        this.players[i].getIsDeath() == false ||
+        this.players[i].getPublicResultFlg()
+      ) {
+        nextStartIndex = i;
+        break;
+      }
+    }
+    this.nowIndex = nextStartIndex;
+    //アクション済みのアカウント数
     this.DidActionCount = 0;
 
     //投票数の初期化
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    //アクション済みのアカウント数
-    this.DidActionCount = 0;
   }
 
   yoru_shuukei() {
@@ -137,6 +149,7 @@ export class GameClass {
         if (this.players[i].getKishiFlag() == false) {
           console.log('騎士が外しました。');
           this.players[i].changeIsDeath(true);
+          this.players[i].changePublicResultFlag(true);
           this.yoru_dethplayer = this.players[i].getName();
         } else {
           console.log('騎士が守りました。');
@@ -169,15 +182,24 @@ export class GameClass {
     this.hantei();
 
     //インデックス初期化
-    this.nowIndex = 0;
+    var nextStartIndex: number = 0;
+    for (var i = 0; i < this.players.length; i++) {
+      if (
+        this.players[i].getIsDeath() == false ||
+        this.players[i].getPublicResultFlg()
+      ) {
+        nextStartIndex = i;
+        break;
+      }
+    }
+    this.nowIndex = nextStartIndex;
+    //アクション済みのアカウント数
+    this.DidActionCount = 0;
 
     //投票数の初期化
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    //アクション済みのアカウント数
-    this.DidActionCount = 0;
   }
 
   //判定

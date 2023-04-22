@@ -25,11 +25,16 @@ const PublicYakushoku: React.FC<Props> = ({route, navigation}) => {
   }
 
   const Tap = () => {
-    game.didActionCount();
     game.nowIndex++;
 
+    game.decrementCanAction();
+
     if (game.compareDidActionCountToPlayersCount()) {
-      game.shukei();
+      if (game.AsaOrYoru === GameConst.ASA) {
+        game.shukei();
+      } else {
+        game.yoru_shuukei();
+      }
       navigation.navigate('ActionResult', {game});
     } else {
       navigation.navigate('Kakunin', {game});
