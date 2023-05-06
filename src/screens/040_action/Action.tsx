@@ -48,11 +48,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     }
     if (game.compareDidActionCountToPlayersCount()) {
       /// 次の画面がアクションリザルト画面の場合
-      if (game.AsaOrYoru === GameConst.ASA) {
-        game.shukei();
-      } else {
-        game.yoru_shuukei();
-      }
+      game.shukei();
       if (game.gameendflag != '0') {
         /// 次の画面がコングラッチュレーション画面の場合
         navigation.navigate('Conglaturation', {game});

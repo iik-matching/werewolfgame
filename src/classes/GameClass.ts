@@ -81,101 +81,65 @@ export class GameClass {
 
   //集計
   shukei() {
-    //最大カウントを調べる
-    var maxCount: number = 0;
-    for (var i = 0; i < this.players.length; i++) {
-      if (this.players[i].getCount() >= maxCount) {
-        maxCount = this.players[i].getCount();
+    if (this.AsaOrYoru == GameConst.YORU) {
+      //人狼が襲撃に成功したかどうか
+      for (var i = 0; i < this.players.length; i++) {
+        //人狼に襲撃された場合
+        if (this.players[i].getShuugekiFlag() == true) {
+          console.log(`${this.players[i].getName()}が襲撃されました。`);
+          //騎士に守られなかった場合
+          if (this.players[i].getKishiFlag() == false) {
+            console.log('騎士が外しました。');
+            this.players[i].changeIsDeath(true);
+            this.players[i].changePublicResultFlag(true);
+            this.yoru_dethplayer = this.players[i].getName();
+          } else {
+            console.log('騎士が守りました。');
+          }
+        }
+
+        if (this.players[i].getUranaiFrag() == true) {
+          console.log(
+            `${this.players[i].getName()}は${this.players[
+              i
+            ].getZinnei()}陣営です。`,
+          );
+        }
       }
     }
 
     //最大カウントの人を全て抽出
     var tIndexs: number[] = [];
-    for (var i = 0; i < this.players.length; i++) {
-      if (this.players[i].getCount() == maxCount) {
-        tIndexs.push(i);
-      }
-    }
-
-    for (var i = 0; i < this.players.length; i++) {
-      console.log(
-        `${this.players[i].getName()}さん: ${this.players[i].getCount()}票`,
-      );
-    }
-
-    //1人の場合
-    if (tIndexs.length == 1) {
-      //死刑執行
-      this.players[tIndexs[0]].changeIsDeath(true);
-      this.players[tIndexs[0]].changePublicResultFlag(true);
-      console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
-      this.asa_dethplayer = this.players[tIndexs[0]].getName();
-    }
-
-    //複数人の場合　決選投票へ
-
-    //判定処理
-    this.hantei();
-
-    //インデックス初期化
-    //インデックス初期化
-    var nextStartIndex: number = 0;
-    for (var i = 0; i < this.players.length; i++) {
-      if (
-        this.players[i].getIsDeath() == false ||
-        this.players[i].getPublicResultFlg()
-      ) {
-        nextStartIndex = i;
-        break;
-      }
-    }
-    this.nowIndex = nextStartIndex;
-    //アクション済みのアカウント数
-    this.DidActionCount = 0;
-
-    //投票数の初期化
-    for (var i = 0; i < this.players.length; i++) {
-      this.players[i].countInitialize();
-    }
-  }
-
-  yoru_shuukei() {
-    //人狼が襲撃に成功したかどうか
-    for (var i = 0; i < this.players.length; i++) {
-      //人狼に襲撃された場合
-      if (this.players[i].getShuugekiFlag() == true) {
-        console.log(`${this.players[i].getName()}が襲撃されました。`);
-        //騎士に守られなかった場合
-        if (this.players[i].getKishiFlag() == false) {
-          console.log('騎士が外しました。');
-          this.players[i].changeIsDeath(true);
-          this.players[i].changePublicResultFlag(true);
-          this.yoru_dethplayer = this.players[i].getName();
-        } else {
-          console.log('騎士が守りました。');
-        }
-      }
-
-      if (this.players[i].getUranaiFrag() == true) {
-        console.log(
-          `${this.players[i].getName()}は${this.players[
-            i
-          ].getZinnei()}陣営です。`,
-        );
-      }
-    }
-
-    //○○さんが怪しまれています。
     var maxCount: number = 0;
     for (var i = 0; i < this.players.length; i++) {
-      if (this.players[i].getCount() >= maxCount) {
+      if (this.players[i].getCount() > maxCount) {
         maxCount = this.players[i].getCount();
       }
     }
     for (var i = 0; i < this.players.length; i++) {
       if (this.players[i].getCount() == maxCount) {
-        console.log(`${this.players[i].getName()}は怪しまれています。`);
+        if (this.AsaOrYoru == GameConst.ASA) {
+          tIndexs.push(i);
+        } else {
+          console.log(`${this.players[i].getName()}は怪しまれています。`);
+        }
       }
+    }
+    if (this.AsaOrYoru == GameConst.ASA) {
+      for (var i = 0; i < this.players.length; i++) {
+        console.log(
+          `${this.players[i].getName()}さん: ${this.players[i].getCount()}票`,
+        );
+      }
+      //1人の場合
+      if (tIndexs.length == 1) {
+        //死刑執行
+        this.players[tIndexs[0]].changeIsDeath(true);
+        this.players[tIndexs[0]].changePublicResultFlag(true);
+        console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
+        this.asa_dethplayer = this.players[tIndexs[0]].getName();
+      }
+      //複数人の場合　決選投票へ
     }
 
     //判定処理
