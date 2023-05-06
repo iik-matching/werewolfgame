@@ -1,5 +1,5 @@
 import {PlayerClass} from './PlayerClass';
-import {GameConst} from '../const';
+import {GameConst, YakushokuConst} from '../const';
 
 //ゲームクラス
 export class GameClass {
@@ -35,6 +35,20 @@ export class GameClass {
   constructor(players: PlayerClass[]) {
     this.players = players;
     this.canActionPlayerCount = this.players.length;
+  }
+
+  gatUranaiResult(): string {
+    let uranaiResult: string = '';
+    for (var i = 0; i < this.players.length; i++) {
+      if (this.players[i].getUranaiFrag() == true) {
+        if (this.players[i].getZinnei() == YakushokuConst.ZINROU) {
+          uranaiResult = '人狼です。';
+        } else {
+          uranaiResult = '人狼ではありません。';
+        }
+      }
+    }
+    return uranaiResult;
   }
 
   //プレイヤー追加
@@ -76,7 +90,6 @@ export class GameClass {
     if (!this.players[this.nowIndex].getIsDeath()) {
       this.players[this.nowIndex].getYakushoku().action(this.players, tName);
     }
-    this.nowIndex++;
   }
 
   //集計
@@ -157,6 +170,7 @@ export class GameClass {
       }
     }
     this.nowIndex = nextStartIndex;
+
     //アクション済みのアカウント数
     this.DidActionCount = 0;
 

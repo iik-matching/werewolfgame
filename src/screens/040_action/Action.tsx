@@ -2,7 +2,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
-import {ExtentionMessageConst, GameConst} from '../../const';
+import {ExtentionMessageConst, GameConst, YakushokuConst} from '../../const';
+import {Alert} from 'react-native';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'Action'>;
@@ -23,13 +24,24 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       );
     }
   }
-  const TestFunc = () => {
-    // 最後の人の場合
-    if (game.compareDidActionCountToPlayersCount()) {
-    }
-  };
 
-  const Tap = (tName: string) => {
+  async function showAndWaitAlert(title: string, message: string) {
+    return new Promise(resolve => {
+      Alert.alert(
+        title,
+        message,
+        [
+          {
+            text: 'OK',
+            onPress: () => resolve(true),
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+  }
+
+  const Tap = async (tName: string) => {
     console.log(
       game.players[game.nowIndex].getName(),
       'がアクション実行！！！！！！！！！！！！！！！',
@@ -43,9 +55,25 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.didActionCount();
     } else {
       console.log('夜のアクションを実行');
+
       game.yoru(tName);
+
+      // 占い師の場合、選択したプレイヤーの役職をアラートで表示
+      if (
+        game.players[game.nowIndex].getYakushoku().getName() ==
+        YakushokuConst.URANAISI
+      ) {
+        let title: string = `占い結果`;
+        let uranaiResult: string = `${tName}は、${game.gatUranaiResult()}`;
+        await showAndWaitAlert(title, uranaiResult);
+      }
+
+      // いずれgameの中に移動する
+      game.nowIndex++;
+
       game.didActionCount();
     }
+
     if (game.compareDidActionCountToPlayersCount()) {
       /// 次の画面がアクションリザルト画面の場合
       game.shukei();
@@ -68,31 +96,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       }
       navigation.navigate('Kakunin', {game});
     }
-
-    // //全てのプレイヤーがアクション済みの場合
-    // console.log('チェック１');
-    // if (game.compareDidActionCountToPlayersCount()) {
-    //   console.log('チェック２');
-    //   if (game.AsaOrYoru === GameConst.ASA) {
-    //     console.log('チェック3');
-    //     game.shukei();
-    //   } else {
-    //     console.log('チェック４');
-    //     game.yoru_shuukei();
-    //   }
-    //   //ゲームが終了したら「conglatutaionへ遷移」
-    //   if (game.gameendflag != '0') {
-    //     console.log('チェック５');
-    //     navigation.navigate('Conglaturation', {game});
-    //   } else {
-    //     console.log('チェック６');
-    //     navigation.navigate('ActionResult', {game});
-    //   }
-    // } else if (game.players[game.nowIndex].getIsDeath()) {
-    // } else {
-    //   console.log('チェック１０');
-    //   navigation.navigate('Kakunin', {game});
-    // }
   };
 
   //「朝or夜」＆役職ごとに定型分を切り替える
