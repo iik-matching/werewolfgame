@@ -1,8 +1,21 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import {RootStackParamList} from '../../../App';
-import {ExtentionMessageConst, GameConst, YakushokuConst} from '../../const';
+import {
+  ExtentionMessageConst,
+  GameConst,
+  YakushokuConst,
+  YakushokuImg,
+} from '../../const';
 import {Alert} from 'react-native';
 import MyButton from '../../components/MyButton';
 import {PlayerClass} from '../../classes/PlayerClass';
@@ -18,7 +31,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   // 色設定　朝:夜
   const BackgroundColor =
-    game.AsaOrYoru === GameConst.ASA ? '#96F1FF' : '#57585A';
+    game.AsaOrYoru === GameConst.ASA ? '#e1f7fa' : '#57585A';
   const FontColor = game.AsaOrYoru === GameConst.ASA ? 'black' : 'white';
   const ButtonColor = game.AsaOrYoru === GameConst.ASA ? 'blue' : 'blue';
   const ButtonFontColor = game.AsaOrYoru === GameConst.ASA ? 'white' : 'white';
@@ -38,6 +51,26 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       fontWeight: 'bold',
       margin: 16,
       color: FontColor,
+    },
+    text2: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      margin: 16,
+      color: 'white',
+    },
+    imageStyle: {
+      width: 1100 / 4,
+      height: 1100 / 4,
+      marginTop: 30,
+      color: 'black',
+    },
+    image: {
+      flex: 1,
+      resizeMode: 'cover',
+      justifyContent: 'center',
+    },
+    yaku_kakunin_image: {
+      color: '#e1f7fa',
     },
   });
 
@@ -186,20 +219,66 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     message = ExtentionMessageConst.SIMIN;
   }
 
+  //役職画像追加
+  const YakushokuImg = (): JSX.Element => {
+    if (game.players[game.nowIndex].getYakushoku().getName() == '市民') {
+      return (
+        <Image
+          style={styles.imageStyle}
+          source={require('../../img/市民画像.jpeg')}
+        />
+      );
+    } else if (game.players[game.nowIndex].getYakushoku().getName() == '人狼') {
+      return (
+        <Image
+          style={styles.imageStyle}
+          source={require('../../img/人狼画像.jpeg')}
+        />
+      );
+    } else if (
+      game.players[game.nowIndex].getYakushoku().getName() == '占い師'
+    ) {
+      return (
+        <Image
+          style={styles.imageStyle}
+          source={require('../../img/占い師画像.jpeg')}
+        />
+      );
+    } else if (game.players[game.nowIndex].getYakushoku().getName() == '騎士') {
+      return (
+        <Image
+          style={styles.imageStyle}
+          source={require('../../img/騎士画像.jpeg')}
+        />
+      );
+    } else {
+      return (
+        <Image
+          style={styles.imageStyle}
+          source={require('../../img/市民画像.jpeg')}
+        />
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {game.players[game.nowIndex].getIsDeath() == false ? (
         //生きている場合
         <View style={styles.main}>
           {game.AsaOrYoru == GameConst.ASA ? (
-            <View style={styles.text}>
-              <Text style={styles.text}>{`ステータス【朝】`}</Text>
-              <Text style={styles.text}>
-                {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
-              </Text>
-              <Text style={styles.text}>{message}</Text>
-              {buttonList}
-            </View>
+            <ImageBackground
+              source={require('../../img/朝画像.jpeg')}
+              style={styles.image}>
+              <View style={styles.text}>
+                <Text style={styles.text}>{`ステータス【朝】`}</Text>
+                <Text style={styles.text}>
+                  {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
+                </Text>
+                <Text style={styles.text}>{message}</Text>
+                {buttonList}
+              </View>
+            </ImageBackground>
           ) : (
             //夜の場合
             <View style={styles.main}>
@@ -209,6 +288,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                   .getYakushoku()
                   .getName()}」です。`}
               </Text>
+              <YakushokuImg></YakushokuImg>
               <Text style={styles.text}>
                 {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
               </Text>
@@ -219,12 +299,15 @@ const Action: React.FC<Props> = ({route, navigation}) => {
         </View>
       ) : (
         //死んでいる場合
-        <View>
-          {/* //プレイヤーが死んでいる場合&一度も役職確認をしたことがない場合 */}
-          <Text style={styles.text}>各プレイヤーの役職内訳</Text>
-          {YakuhokuList}
-          <Button title="next" onPress={yaku_kakunin_Tap} />
-        </View>
+        <ImageBackground
+          source={require('../../img/役職確認画面.jpeg')}
+          style={styles.image}>
+          <Text style={styles.text2}>【各プレイヤーの役職内訳】</Text>
+          <View>{YakuhokuList}</View>
+          <View>
+            <MyButton title={'next'} onPress={yaku_kakunin_Tap} />
+          </View>
+        </ImageBackground>
       )}
     </SafeAreaView>
   );
