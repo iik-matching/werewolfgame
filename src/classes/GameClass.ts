@@ -26,6 +26,13 @@ export class GameClass {
 
   //アクション済みのプレイヤー人数
   public DidActionCount: number = 0;
+
+  //決選投票判定フラグ
+  private FinalVoteFlg: boolean = false;
+
+  //決選投票対象プレイヤーの配列
+  public FinalVoteTargetPlayers: PlayerClass[] = [];
+
   //朝か夜
   public AsaOrYoru: string = GameConst.YORU;
 
@@ -60,7 +67,22 @@ export class GameClass {
   compareDidActionCountToPlayersCount(): boolean {
     console.log('DidActionCount', this.DidActionCount);
     console.log('canActionPlayerCount', this.canActionPlayerCount);
-    return this.DidActionCount >= this.canActionPlayerCount;
+    if (this.FinalVoteFlg) {
+      return (
+        this.DidActionCount >=
+        this.canActionPlayerCount - this.FinalVoteTargetPlayers.length
+      );
+    } else {
+      return this.DidActionCount >= this.canActionPlayerCount;
+    }
+  }
+
+  changeFinalVoteFlag(flag: boolean) {
+    this.FinalVoteFlg = flag;
+  }
+
+  getFinalVoteFlag() {
+    return this.FinalVoteFlg;
   }
 
   //朝のアクション
@@ -111,52 +133,121 @@ export class GameClass {
     //最大カウントの人を全て抽出
     var tIndexs: number[] = [];
     var maxCount: number = 0;
-    for (var i = 0; i < this.players.length; i++) {
-      if (this.players[i].getCount() > maxCount) {
-        maxCount = this.players[i].getCount();
+
+    //決選投票か通常投票か
+    if (this.FinalVoteFlg) {
+      //決選投票の場合
+      for (var i = 0; i < this.FinalVoteTargetPlayers.length; i++) {
+        if (this.FinalVoteTargetPlayers[i].getCount() > maxCount) {
+          maxCount = this.FinalVoteTargetPlayers[i].getCount();
+        }
       }
-    }
-    for (var i = 0; i < this.players.length; i++) {
-      if (this.players[i].getCount() == maxCount) {
-        if (this.AsaOrYoru == GameConst.ASA) {
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].getCount() == maxCount) {
           tIndexs.push(i);
-        } else {
-          console.log(`${this.players[i].getName()}は怪しまれています。`);
+        }
+      }
+    } else {
+      //通常投票の場合
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].getCount() > maxCount) {
+          maxCount = this.players[i].getCount();
+        }
+      }
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].getCount() == maxCount) {
+          if (this.AsaOrYoru == GameConst.ASA) {
+            tIndexs.push(i);
+            this.FinalVoteTargetPlayers.push(this.players[i]);
+          } else {
+            console.log(`${this.players[i].getName()}は怪しまれています。`);
+          }
         }
       }
     }
+
     if (this.AsaOrYoru == GameConst.ASA) {
       for (var i = 0; i < this.players.length; i++) {
         console.log(
           `${this.players[i].getName()}さん: ${this.players[i].getCount()}票`,
         );
       }
-      //1人の場合
-      if (tIndexs.length == 1) {
-        //死刑執行
-        this.players[tIndexs[0]].changeIsDeath(true);
-        this.players[tIndexs[0]].changePublicResultFlag(true);
-        console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
-        this.asa_dethplayer = this.players[tIndexs[0]].getName();
+      if (this.getFinalVoteFlag()) {
+        //1人の場合
+        if (tIndexs.length <= 1) {
+          //死刑執行
+          this.players[tIndexs[0]].changeIsDeath(true);
+          this.players[tIndexs[0]].changePublicResultFlag(true);
+          console.log(
+            '決選投票の結果、' +
+              this.players[tIndexs[0]].getName() +
+              'を処刑しました。',
+          );
+        } else {
+          // 投票対象のプレイヤーをランダムに処刑
+          const shuffle = ([...array]) => {
+            for (let i = array.length - 1; i >= 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+          };
+          this.FinalVoteTargetPlayers = shuffle(this.FinalVoteTargetPlayers);
+          this.FinalVoteTargetPlayers[0].changeIsDeath(true);
+          this.FinalVoteTargetPlayers[0].changePublicResultFlag(true);
+          console.log(
+            '決選投票でも決まらなかった為、ランダムに選択した結果' +
+              this.FinalVoteTargetPlayers[0].getName() +
+              'を処刑しました。',
+          );
+        }
+        this.asa_dethplayer = this.FinalVoteTargetPlayers[0].getName();
+        this.FinalVoteTargetPlayers = [];
+        this.changeFinalVoteFlag(false);
+      } else {
+        //1人の場合
+        if (tIndexs.length <= 1) {
+          //死刑執行
+          this.players[tIndexs[0]].changeIsDeath(true);
+          this.players[tIndexs[0]].changePublicResultFlag(true);
+          console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
+          this.asa_dethplayer = this.players[tIndexs[0]].getName();
+        } else {
+          //複数人の場合　決選投票へ
+          this.changeFinalVoteFlag(true);
+        }
       }
-      //複数人の場合　決選投票へ
     }
 
-    //判定処理
-    this.hantei();
+    if (!this.getFinalVoteFlag()) {
+      //判定処理
+      this.hantei();
+    }
 
     //インデックス初期化
     var nextStartIndex: number = 0;
-    for (var i = 0; i < this.players.length; i++) {
-      if (
-        this.players[i].getIsDeath() == false ||
-        this.players[i].getPublicResultFlg()
-      ) {
-        nextStartIndex = i;
-        break;
+    if (this.getFinalVoteFlag()) {
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.getFinalVoteFlag()) {
+          if (this.players[i].getIsDeath() == false && !tIndexs.includes(i)) {
+            nextStartIndex = i;
+            break;
+          }
+        }
+      }
+    } else {
+      for (var i = 0; i < this.players.length; i++) {
+        if (
+          this.players[i].getIsDeath() == false ||
+          this.players[i].getPublicResultFlg()
+        ) {
+          nextStartIndex = i;
+          break;
+        }
       }
     }
     this.nowIndex = nextStartIndex;
+
     //アクション済みのアカウント数
     this.DidActionCount = 0;
 

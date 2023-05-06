@@ -11,18 +11,30 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   // ここでPropsを受け取る
   const {game} = route.params;
   const buttonList = [];
-
-  for (const [i, player] of game.players.entries()) {
-    if (player !== game.players[game.nowIndex] && !player.getIsDeath()) {
+  if (game.getFinalVoteFlag()) {
+    for (const [i, player] of game.FinalVoteTargetPlayers.entries()) {
       buttonList.push(
         <Button
           key={i}
-          title={game.players[i].getName()}
-          onPress={() => Tap(game.players[i].getName())}
+          title={player.getName()}
+          onPress={() => Tap(player.getName())}
         />,
       );
     }
+  } else {
+    for (const [i, player] of game.players.entries()) {
+      if (player !== game.players[game.nowIndex] && !player.getIsDeath()) {
+        buttonList.push(
+          <Button
+            key={i}
+            title={game.players[i].getName()}
+            onPress={() => Tap(game.players[i].getName())}
+          />,
+        );
+      }
+    }
   }
+
   const TestFunc = () => {
     // 最後の人の場合
     if (game.compareDidActionCountToPlayersCount()) {
@@ -52,6 +64,8 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       if (game.gameendflag != '0') {
         /// 次の画面がコングラッチュレーション画面の場合
         navigation.navigate('Conglaturation', {game});
+      } else if (game.getFinalVoteFlag()) {
+        navigation.navigate('Kakunin', {game});
       } else {
         navigation.navigate('ActionResult', {game});
       }
@@ -127,6 +141,11 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       {game.AsaOrYoru == GameConst.ASA ? (
         <View style={styles.backColorAsa}>
           <Text style={styles.greetingAsa}>{`ステータス【朝】`}</Text>
+          {game.getFinalVoteFlag() ? (
+            <Text style={styles.greetingAsa}>{`決選投票`}</Text>
+          ) : (
+            ''
+          )}
           <Text style={styles.greetingAsa}>
             {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
           </Text>
