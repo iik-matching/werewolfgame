@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
+import MyButton from '../../components/MyButton';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'PlayerSetting'>;
@@ -85,9 +86,8 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
         ))}
       </ScrollView>
 
-      <Button title="プレイヤー追加" onPress={addPlayer} />
-
-      <Button title="next" onPress={Tap} />
+      <MyButton title={'プレイヤー追加'} onPress={addPlayer} />
+      <MyButton title={'next'} onPress={Tap} />
     </SafeAreaView>
   );
 };

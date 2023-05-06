@@ -10,6 +10,7 @@ import {
   ShiminClass,
   UranaishiClass,
 } from '../../classes/yakushoku';
+import MyButton from '../../components/MyButton';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'YakushokuSetting'>;
@@ -145,8 +146,6 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="デバッグ用ボタン" onPress={() => Reset()} />
-
       <Text style={styles.text}>役職設定</Text>
 
       <Text style={styles.text}>全体人口:{PlayerNames.length}</Text>
@@ -154,62 +153,46 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
         <Text style={styles.text}>市民:{isNSimin}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.text}>人狼:{isNZinrou}</Text>
+        <Text style={[styles.text, styles.wid]}>人狼:{isNZinrou}</Text>
         {enable1 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addZinrou(1)}>
-            +
-          </Text>
+          <MyButton title={'+'} onPress={() => addZinrou(1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
+          <MyButton title={'+'} backgroundColor="gray" />
         )}
         {enable2 ? (
-          <Text
-            style={[styles.text, styles.blue]}
-            onPress={() => addZinrou(-1)}>
-            -
-          </Text>
+          <MyButton title={'-'} onPress={() => addZinrou(-1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
+          <MyButton title={'-'} backgroundColor="gray" />
         )}
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.text}>騎士:{isNKishi}</Text>
+        <Text style={[styles.text, styles.wid]}>騎士:{isNKishi}</Text>
         {enable3 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addKishi(1)}>
-            +
-          </Text>
+          <MyButton title={'+'} onPress={() => addKishi(1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
+          <MyButton title={'+'} backgroundColor="gray" />
         )}
         {enable4 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addKishi(-1)}>
-            -
-          </Text>
+          <MyButton title={'-'} onPress={() => addKishi(-1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
+          <MyButton title={'-'} backgroundColor="gray" />
         )}
       </View>
       <View style={styles.row}>
-        <Text style={styles.text}>占い師:{isNUranai}</Text>
+        <Text style={[styles.text, styles.wid]}>占い師:{isNUranai}</Text>
         {enable5 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addUranai(1)}>
-            +
-          </Text>
+          <MyButton title={'+'} onPress={() => addUranai(1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
+          <MyButton title={'+'} backgroundColor="gray" />
         )}
         {enable6 ? (
-          <Text
-            style={[styles.text, styles.blue]}
-            onPress={() => addUranai(-1)}>
-            -
-          </Text>
+          <MyButton title={'-'} onPress={() => addUranai(-1)} />
         ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
+          <MyButton title={'-'} backgroundColor="gray" />
         )}
       </View>
-      <Button title="next" onPress={Tap} />
+      <MyButton title={'next'} onPress={Tap} />
     </SafeAreaView>
   );
 };
@@ -219,6 +202,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  wid: {
+    width: 90,
+    textAlign: 'right',
   },
   text: {
     fontSize: 20,

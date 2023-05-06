@@ -1,9 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {ExtentionMessageConst, GameConst, YakushokuConst} from '../../const';
 import {Alert} from 'react-native';
+import MyButton from '../../components/MyButton';
+import {PlayerClass} from '../../classes/PlayerClass';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'Action'>;
@@ -13,13 +15,41 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
   const buttonList = [];
 
+  // 色設定　朝:夜
+  const BackgroundColor =
+    game.AsaOrYoru === GameConst.ASA ? '#96F1FF' : '#57585A';
+  const FontColor = game.AsaOrYoru === GameConst.ASA ? 'black' : 'white';
+  const ButtonColor = game.AsaOrYoru === GameConst.ASA ? 'blue' : 'blue';
+  const ButtonFontColor = game.AsaOrYoru === GameConst.ASA ? 'white' : 'white';
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: BackgroundColor,
+    },
+    main: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    text: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      margin: 16,
+      color: FontColor,
+    },
+  });
+
   for (const [i, player] of game.players.entries()) {
     if (player !== game.players[game.nowIndex] && !player.getIsDeath()) {
       buttonList.push(
-        <Button
+        <MyButton
           key={i}
           title={game.players[i].getName()}
           onPress={() => Tap(game.players[i].getName())}
+          backgroundColor={ButtonColor}
+          textColor={ButtonFontColor}
+          minWidth={150}
         />,
       );
     }
@@ -125,29 +155,30 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     message = ExtentionMessageConst.SIMIN;
   }
 
+  useState;
+
   return (
     <SafeAreaView style={styles.container}>
       {game.AsaOrYoru == GameConst.ASA ? (
-        <View style={styles.backColorAsa}>
-          <Text style={styles.greetingAsa}>{`ステータス【朝】`}</Text>
-          <Text style={styles.greetingAsa}>
+        <View style={styles.main}>
+          <Text style={styles.text}>{`ステータス【朝】`}</Text>
+          <Text style={styles.text}>
             {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
           </Text>
-          <Text style={styles.greetingAsa}>{message}</Text>
+          <Text style={styles.text}>{message}</Text>
           {buttonList}
         </View>
       ) : (
-        <View style={styles.backColorYoru}>
-          <Text style={styles.greetingYoru}>{`ステータス【夜】`}</Text>
-          <Text style={styles.greetingYoru}>
-            {`あなたは「${game.players[game.nowIndex]
+        <View style={styles.main}>
+          <Text style={styles.text}>{`ステータス【夜】`}</Text>
+          <Text style={styles.text}>
+            {`${game.players[game.nowIndex].getName()}は「${game.players[
+              game.nowIndex
+            ]
               .getYakushoku()
               .getName()}」です。`}
           </Text>
-          <Text style={styles.greetingYoru}>
-            {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
-          </Text>
-          <Text style={styles.greetingYoru}>{message}</Text>
+          <Text style={styles.text}>{message}</Text>
           {buttonList}
         </View>
       )}
@@ -155,33 +186,4 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  backColorAsa: {
-    backgroundColor: '#96F1FF',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backColorYoru: {
-    backgroundColor: '#57585A',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  greetingAsa: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 16,
-    color: 'black',
-  },
-  greetingYoru: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 16,
-    color: 'white',
-  },
-});
 export default Action;

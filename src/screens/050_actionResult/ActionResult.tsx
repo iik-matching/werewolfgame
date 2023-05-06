@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
+import MyButton from '../../components/MyButton';
 import {GameConst} from '../../const';
 
 //お決まり
@@ -62,7 +63,7 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
         </>
       )}
 
-      <Button title="next" onPress={Tap} />
+      <MyButton title={'next'} onPress={Tap} />
     </SafeAreaView>
   );
 };

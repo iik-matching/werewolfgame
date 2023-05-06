@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
+import MyButton from '../../components/MyButton';
 import {ExtentionMessageConst, GameConst} from '../../const';
 
 //お決まり
@@ -51,7 +52,7 @@ const PublicYakushoku: React.FC<Props> = ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.greeting}>各プレイヤーの役職内訳</Text>
       {YakuhokuList}
-      <Button title="next" onPress={Tap} />
+      <MyButton title={'next'} onPress={Tap} />
     </SafeAreaView>
   );
 };
