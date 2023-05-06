@@ -33,7 +33,7 @@ const PublicYakushoku: React.FC<Props> = ({route, navigation}) => {
       if (game.AsaOrYoru === GameConst.ASA) {
         game.shukei();
       } else {
-        game.yoru_shuukei();
+        game.shukei();
       }
       navigation.navigate('ActionResult', {game});
     } else {
