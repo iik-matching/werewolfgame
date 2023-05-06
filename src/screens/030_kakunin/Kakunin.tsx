@@ -1,6 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {GameClass} from '../../classes/GameClass';
 import {PlayerClass} from '../../classes/PlayerClass';
@@ -38,13 +45,19 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}>確認画面</Text>
-      <Text style={styles.greeting}>
-        {`あなたは${game.getNowPlayer().getName()}ですか？`}
-      </Text>
-      <MyButton title={'next'} onPress={Tap} />
-    </SafeAreaView>
+    <ImageBackground
+      source={require('../../img/確認画面.png')}
+      style={styles.image}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+          <Text style={styles.greeting}>【確認画面】</Text>
+          <Text style={styles.greeting}>
+            {`あなたは${game.getNowPlayer().getName()}ですか？`}
+          </Text>
+          <MyButton title={'next'} onPress={Tap} />
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
@@ -55,9 +68,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   greeting: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     margin: 16,
+    color: 'white',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
 });
 
