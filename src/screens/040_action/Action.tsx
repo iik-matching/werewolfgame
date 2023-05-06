@@ -14,7 +14,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
   const buttonList = [];
   const YakuhokuList = [];
-
   // 色設定　朝:夜
   const BackgroundColor =
     game.AsaOrYoru === GameConst.ASA ? '#96F1FF' : '#57585A';
@@ -40,21 +39,30 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     },
   });
 
-  for (const [i, player] of game.players.entries()) {
-    if (
-      player.getName() !== game.getNowPlayer().getName() &&
-      !player.getIsDeath()
-    ) {
+  if (game.getFinalVoteFlag()) {
+    for (const [i, player] of game.FinalVoteTargetPlayers.entries()) {
       buttonList.push(
         <MyButton
           key={i}
-          title={game.players[i].getName()}
-          onPress={() => Tap(game.players[i].getName())}
-          backgroundColor={ButtonColor}
-          textColor={ButtonFontColor}
-          minWidth={150}
+          title={player.getName()}
+          onPress={() => Tap(player.getName())}
         />,
       );
+    }
+  } else {
+    for (const [i, player] of game.players.entries()) {
+      if (
+        player.getName() !== game.getNowPlayer().getName() &&
+        !player.getIsDeath()
+      ) {
+        buttonList.push(
+          <MyButton
+            key={i}
+            title={game.players[i].getName()}
+            onPress={() => Tap(game.players[i].getName())}
+          />,
+        );
+      }
     }
   }
 
@@ -117,6 +125,8 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       if (game.gameendflag != '0') {
         /// 次の画面がコングラッチュレーション画面の場合
         navigation.navigate('Conglaturation', {game});
+      } else if (game.getFinalVoteFlag()) {
+        navigation.navigate('Kakunin', {game});
       } else {
         navigation.navigate('ActionResult', {game});
       }
@@ -156,6 +166,11 @@ const Action: React.FC<Props> = ({route, navigation}) => {
           {game.AsaOrYoru == GameConst.ASA ? (
             <View style={styles.text}>
               <Text style={styles.text}>{`ステータス【朝】`}</Text>
+              {game.getFinalVoteFlag() ? (
+                <Text style={styles.text}>{`決選投票`}</Text>
+              ) : (
+                ''
+              )}
               <Text style={styles.text}>
                 {`あなたは「${game.getNowPlayer().getName()}」です。`}
               </Text>
