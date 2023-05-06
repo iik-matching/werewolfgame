@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {ExtentionMessageConst, GameConst, YakushokuConst} from '../../const';
@@ -14,6 +14,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   // ここでPropsを受け取る
   const {game} = route.params;
   const buttonList = [];
+  const YakuhokuList = [];
 
   // 色設定　朝:夜
   const BackgroundColor =
@@ -55,6 +56,37 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     }
   }
 
+  for (const [i, player] of game.players.entries()) {
+    var name: string = player.getName();
+    console.log('name', name);
+
+    YakuhokuList.push(
+      <Text key={i} style={styles.text}>{`${name}：${game.players[i]
+        .getYakushoku()
+        .getName()}`}</Text>,
+    );
+    console.log;
+  }
+
+  const yaku_kakunin_Tap = () => {
+    game.nowIndex++;
+
+    game.decrementCanAction();
+
+    if (game.compareDidActionCountToPlayersCount()) {
+      game.shukei();
+      navigation.navigate('ActionResult', {game});
+    } else {
+      navigation.navigate('Kakunin', {game});
+    }
+
+    console.log('game', game);
+
+    //
+    //Gameの動いている様子を見る
+    //
+  };
+
   async function showAndWaitAlert(title: string, message: string) {
     return new Promise(resolve => {
       Alert.alert(
@@ -85,7 +117,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.didActionCount();
     } else {
       console.log('夜のアクションを実行');
-
       game.yoru(tName);
 
       // 占い師の場合、選択したプレイヤーの役職をアラートで表示
@@ -155,31 +186,44 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     message = ExtentionMessageConst.SIMIN;
   }
 
-  useState;
-
   return (
     <SafeAreaView style={styles.container}>
-      {game.AsaOrYoru == GameConst.ASA ? (
+      {game.players[game.nowIndex].getIsDeath() == false ? (
+        //生きている場合
         <View style={styles.main}>
-          <Text style={styles.text}>{`ステータス【朝】`}</Text>
-          <Text style={styles.text}>
-            {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
-          </Text>
-          <Text style={styles.text}>{message}</Text>
-          {buttonList}
+          {game.AsaOrYoru == GameConst.ASA ? (
+            <View style={styles.text}>
+              <Text style={styles.text}>{`ステータス【朝】`}</Text>
+              <Text style={styles.text}>
+                {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
+              </Text>
+              <Text style={styles.text}>{message}</Text>
+              {buttonList}
+            </View>
+          ) : (
+            //夜の場合
+            <View style={styles.main}>
+              <Text style={styles.text}>{`ステータス【夜】`}</Text>
+              <Text style={styles.text}>
+                {`あなたは「${game.players[game.nowIndex]
+                  .getYakushoku()
+                  .getName()}」です。`}
+              </Text>
+              <Text style={styles.text}>
+                {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
+              </Text>
+              <Text style={styles.text}>{message}</Text>
+              {buttonList}
+            </View>
+          )}
         </View>
       ) : (
-        <View style={styles.main}>
-          <Text style={styles.text}>{`ステータス【夜】`}</Text>
-          <Text style={styles.text}>
-            {`${game.players[game.nowIndex].getName()}は「${game.players[
-              game.nowIndex
-            ]
-              .getYakushoku()
-              .getName()}」です。`}
-          </Text>
-          <Text style={styles.text}>{message}</Text>
-          {buttonList}
+        //死んでいる場合
+        <View>
+          {/* //プレイヤーが死んでいる場合&一度も役職確認をしたことがない場合 */}
+          <Text style={styles.text}>各プレイヤーの役職内訳</Text>
+          {YakuhokuList}
+          <Button title="next" onPress={yaku_kakunin_Tap} />
         </View>
       )}
     </SafeAreaView>

@@ -11,7 +11,6 @@ import {IYakushoku} from './src/classes/interface';
 import {GameClass} from './src/classes/GameClass';
 import Conglaturation from './src/screens/990_conglaturation/Conglaturation';
 import ActionResult from './src/screens/050_actionResult/ActionResult';
-import PublicYakushoku from './src/screens/060_publicYakushoku/PublicYakushoku';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -21,7 +20,6 @@ export type RootStackParamList = {
   Conglaturation: MasterProps;
   Action: MasterProps;
   ActionResult: MasterProps;
-  PublicYakushoku: MasterProps;
 };
 
 type MasterProps = {
@@ -46,7 +44,6 @@ const App = () => {
         <Stack.Screen name="Conglaturation" component={Conglaturation} />
         <Stack.Screen name="Action" component={Action} />
         <Stack.Screen name="ActionResult" component={ActionResult} />
-        <Stack.Screen name="PublicYakushoku" component={PublicYakushoku} />
       </Stack.Navigator>
     </NavigationContainer>
   );
