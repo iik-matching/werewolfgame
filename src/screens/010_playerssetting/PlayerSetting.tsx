@@ -43,6 +43,7 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
     'Bさん',
     'Cさん',
     'Dさん',
+    'Eさん',
   ]);
 
   function onChange(str: string, index: number) {

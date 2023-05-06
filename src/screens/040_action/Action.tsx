@@ -3,9 +3,8 @@ import React from 'react';
 import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {ExtentionMessageConst, GameConst, YakushokuConst} from '../../const';
-import {Alert} from 'react-native';
 import MyButton from '../../components/MyButton';
-import {PlayerClass} from '../../classes/PlayerClass';
+import {showAndWaitAlert} from '../../components/MyAlert';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'Action'>;
@@ -42,7 +41,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   });
 
   for (const [i, player] of game.players.entries()) {
-    if (player !== game.players[game.nowIndex] && !player.getIsDeath()) {
+    if (
+      player.getName() !== game.getNowPlayer().getName() &&
+      !player.getIsDeath()
+    ) {
       buttonList.push(
         <MyButton
           key={i}
@@ -58,19 +60,16 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   for (const [i, player] of game.players.entries()) {
     var name: string = player.getName();
-    console.log('name', name);
 
     YakuhokuList.push(
       <Text key={i} style={styles.text}>{`${name}：${game.players[i]
         .getYakushoku()
         .getName()}`}</Text>,
     );
-    console.log;
   }
 
   const yaku_kakunin_Tap = () => {
-    game.nowIndex++;
-
+    game.nextPlayer();
     game.decrementCanAction();
 
     if (game.compareDidActionCountToPlayersCount()) {
@@ -79,59 +78,27 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     } else {
       navigation.navigate('Kakunin', {game});
     }
-
-    console.log('game', game);
-
-    //
-    //Gameの動いている様子を見る
-    //
   };
 
-  async function showAndWaitAlert(title: string, message: string) {
-    return new Promise(resolve => {
-      Alert.alert(
-        title,
-        message,
-        [
-          {
-            text: 'OK',
-            onPress: () => resolve(true),
-          },
-        ],
-        {cancelable: false},
-      );
-    });
-  }
-
   const Tap = async (tName: string) => {
-    console.log(
-      game.players[game.nowIndex].getName(),
-      'がアクション実行！！！！！！！！！！！！！！！',
-    );
     //死んだ人の初期化
     game.asa_dethplayer = '';
     game.yoru_dethplayer = 'いません';
     if (game.AsaOrYoru === GameConst.ASA) {
-      console.log('朝のアクションを実行');
+      console.log(game.getNowPlayer().getName(), '朝のアクションを実行');
       game.asa(tName);
       game.didActionCount();
     } else {
-      console.log('夜のアクションを実行');
+      console.log(game.getNowPlayer().getName(), '夜のアクションを実行');
       game.yoru(tName);
-
       // 占い師の場合、選択したプレイヤーの役職をアラートで表示
       if (
-        game.players[game.nowIndex].getYakushoku().getName() ==
-        YakushokuConst.URANAISI
+        game.getNowPlayer().getYakushoku().getName() == YakushokuConst.URANAISI
       ) {
         let title: string = `占い結果`;
         let uranaiResult: string = `${tName}は、${game.gatUranaiResult()}`;
         await showAndWaitAlert(title, uranaiResult);
       }
-
-      // いずれgameの中に移動する
-      game.nowIndex++;
-
       game.didActionCount();
     }
 
@@ -145,42 +112,28 @@ const Action: React.FC<Props> = ({route, navigation}) => {
         navigation.navigate('ActionResult', {game});
       }
     } else {
-      /// 次の画面が確認画面の場合
-      console.log('check1');
-      if (game.players[game.nowIndex].getIsDeath()) {
-        console.log(game.players[game.nowIndex].getName());
-        console.log('check2');
-        if (!game.players[game.nowIndex].getPublicResultFlg()) {
-          console.log('check3');
-          game.nowIndex++;
-        }
-      }
       navigation.navigate('Kakunin', {game});
     }
+    game.nextPlayer();
   };
 
   //「朝or夜」＆役職ごとに定型分を切り替える
   var message = '';
   if (game.AsaOrYoru == GameConst.YORU) {
-    switch (game.players[game.nowIndex].getYakushoku().getName()) {
+    switch (game.getNowPlayer().getYakushoku().getName()) {
       case '市民':
-        console.log('市民');
         message = ExtentionMessageConst.SIMIN;
         break;
       case '人狼':
-        console.log('人狼');
         message = ExtentionMessageConst.ZINROU;
         break;
       case '占い師':
-        console.log('占い師');
         message = ExtentionMessageConst.URANAISI;
         break;
       case '騎士':
-        console.log('騎士');
         message = ExtentionMessageConst.KISHI;
         break;
       default:
-        console.log('その他');
     }
   } else {
     message = ExtentionMessageConst.SIMIN;
@@ -188,14 +141,14 @@ const Action: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {game.players[game.nowIndex].getIsDeath() == false ? (
+      {game.getNowPlayer().getIsDeath() == false ? (
         //生きている場合
         <View style={styles.main}>
           {game.AsaOrYoru == GameConst.ASA ? (
             <View style={styles.text}>
               <Text style={styles.text}>{`ステータス【朝】`}</Text>
               <Text style={styles.text}>
-                {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
+                {`あなたは「${game.getNowPlayer().getName()}」です。`}
               </Text>
               <Text style={styles.text}>{message}</Text>
               {buttonList}
@@ -205,13 +158,12 @@ const Action: React.FC<Props> = ({route, navigation}) => {
             <View style={styles.main}>
               <Text style={styles.text}>{`ステータス【夜】`}</Text>
               <Text style={styles.text}>
-                {`あなたは「${game.players[game.nowIndex]
+                {`${game.getNowPlayer().getName()}は「${game
+                  .getNowPlayer()
                   .getYakushoku()
                   .getName()}」です。`}
               </Text>
-              <Text style={styles.text}>
-                {`あなたは「${game.players[game.nowIndex].getName()}」です。`}
-              </Text>
+
               <Text style={styles.text}>{message}</Text>
               {buttonList}
             </View>

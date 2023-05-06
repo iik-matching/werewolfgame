@@ -20,8 +20,8 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
 
   function Tap() {
-    if (game.players[game.nowIndex].getPublicResultFlg()) {
-      game.players[game.nowIndex].changePublicResultFlag(false);
+    if (game.getNowPlayer().getPublicResultFlg()) {
+      game.getNowPlayer().changePublicResultFlag(false);
       navigation.navigate('Action', {game});
     } else {
       //アクション画面に移動
@@ -37,17 +37,11 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
     return array;
   };
 
-  console.log(
-    'game.players[game.nowIndex].getName()',
-    game.players[game.nowIndex].getName(),
-  );
-  console.log('game.AsaOrYoru', game.AsaOrYoru);
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.greeting}>確認画面</Text>
       <Text style={styles.greeting}>
-        {`あなたは${game.players[game.nowIndex].getName()}ですか？`}
+        {`あなたは${game.getNowPlayer().getName()}ですか？`}
       </Text>
       <MyButton title={'next'} onPress={Tap} />
     </SafeAreaView>

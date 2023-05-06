@@ -31,15 +31,16 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
     //ゲームの状態が「朝」なら「夜」に、「夜」なら「朝」に変更する
     if (game.AsaOrYoru == GameConst.ASA) {
       console.log('現在：朝 → 夜に切り替える');
+      console.log('朝殺された人', game.asa_dethplayer);
+
       game.AsaOrYoru = GameConst.YORU;
     } else {
       console.log('現在：夜 → 朝に切り替える');
+      console.log('夜殺された人', game.yoru_dethplayer);
+
       game.AsaOrYoru = GameConst.ASA;
     }
   }, []);
-
-  console.log('朝殺された人', game.asa_dethplayer);
-  console.log('夜殺された人', game.yoru_dethplayer);
 
   return (
     <SafeAreaView style={styles.container}>
