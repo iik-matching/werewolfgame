@@ -21,7 +21,7 @@ const Kakunin: React.FC<Props> = ({route, navigation}) => {
   function Tap() {
     if (game.players[game.nowIndex].getPublicResultFlg()) {
       game.players[game.nowIndex].changePublicResultFlag(false);
-      navigation.navigate('PublicYakushoku', {game});
+      navigation.navigate('Action', {game});
     } else {
       //アクション画面に移動
       navigation.navigate('Action', {game});

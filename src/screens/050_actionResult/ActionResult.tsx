@@ -61,7 +61,6 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
           <Text style={styles.text}>{`${game.yoru_dethplayer}でした。`}</Text>
         </>
       )}
-
       <Button title="next" onPress={Tap} />
     </SafeAreaView>
   );
@@ -78,5 +77,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 export default ActionResult;
