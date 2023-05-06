@@ -16,7 +16,6 @@ import {
   YakushokuConst,
   YakushokuImg,
 } from '../../const';
-import {Alert} from 'react-native';
 import MyButton from '../../components/MyButton';
 import {showAndWaitAlert} from '../../components/MyAlert';
 
