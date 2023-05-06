@@ -1,6 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
-import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+} from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {GameClass} from '../../classes/GameClass';
 import {PlayerClass} from '../../classes/PlayerClass';
@@ -10,6 +17,7 @@ import {
   ShiminClass,
   UranaishiClass,
 } from '../../classes/yakushoku';
+import MyButton from '../../components/MyButton';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'YakushokuSetting'>;
@@ -125,11 +133,14 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
       return array;
     };
     yakushokuArr = shuffle(yakushokuArr);
-    // yakushokuArr = [];
-    // yakushokuArr.push(new ShiminClass());
-    // yakushokuArr.push(new JinrouClass());
-    // yakushokuArr.push(new KishiClass());
-    // yakushokuArr.push(new UranaishiClass());
+
+    // デバッグ用　固定メンバー
+    yakushokuArr = [];
+    yakushokuArr.push(new KishiClass());
+    yakushokuArr.push(new JinrouClass());
+    yakushokuArr.push(new ShiminClass());
+    yakushokuArr.push(new ShiminClass());
+    yakushokuArr.push(new UranaishiClass());
 
     //プレイヤーを作成
     let players = [];
@@ -144,73 +155,59 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Button title="デバッグ用ボタン" onPress={() => Reset()} />
+    <ImageBackground
+      source={require('../../img/役職確認画面.jpeg')}
+      style={styles.image}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.text2}>【役職設定】</Text>
 
-      <Text style={styles.text}>役職設定</Text>
+        <Text style={styles.text}>全体人口:{PlayerNames.length}</Text>
+        <View style={styles.row}>
+          <Text style={styles.text}>市民:{isNSimin}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={[styles.text, styles.wid]}>人狼:{isNZinrou}</Text>
+          {enable1 ? (
+            <MyButton title={'+'} onPress={() => addZinrou(1)} />
+          ) : (
+            <MyButton title={'+'} backgroundColor="gray" />
+          )}
+          {enable2 ? (
+            <MyButton title={'-'} onPress={() => addZinrou(-1)} />
+          ) : (
+            <MyButton title={'-'} backgroundColor="gray" />
+          )}
+        </View>
 
-      <Text style={styles.text}>全体人口:{PlayerNames.length}</Text>
-      <View style={styles.row}>
-        <Text style={styles.text}>市民:{isNSimin}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>人狼:{isNZinrou}</Text>
-        {enable1 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addZinrou(1)}>
-            +
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
-        )}
-        {enable2 ? (
-          <Text
-            style={[styles.text, styles.blue]}
-            onPress={() => addZinrou(-1)}>
-            -
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
-        )}
-      </View>
-
-      <View style={styles.row}>
-        <Text style={styles.text}>騎士:{isNKishi}</Text>
-        {enable3 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addKishi(1)}>
-            +
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
-        )}
-        {enable4 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addKishi(-1)}>
-            -
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
-        )}
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>占い師:{isNUranai}</Text>
-        {enable5 ? (
-          <Text style={[styles.text, styles.blue]} onPress={() => addUranai(1)}>
-            +
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>+</Text>
-        )}
-        {enable6 ? (
-          <Text
-            style={[styles.text, styles.blue]}
-            onPress={() => addUranai(-1)}>
-            -
-          </Text>
-        ) : (
-          <Text style={[styles.text, styles.gray]}>-</Text>
-        )}
-      </View>
-      <Button title="next" onPress={Tap} />
-    </SafeAreaView>
+        <View style={styles.row}>
+          <Text style={[styles.text, styles.wid]}>騎士:{isNKishi}</Text>
+          {enable3 ? (
+            <MyButton title={'+'} onPress={() => addKishi(1)} />
+          ) : (
+            <MyButton title={'+'} backgroundColor="gray" />
+          )}
+          {enable4 ? (
+            <MyButton title={'-'} onPress={() => addKishi(-1)} />
+          ) : (
+            <MyButton title={'-'} backgroundColor="gray" />
+          )}
+        </View>
+        <View style={styles.row}>
+          <Text style={[styles.text, styles.wid]}>占い師:{isNUranai}</Text>
+          {enable5 ? (
+            <MyButton title={'+'} onPress={() => addUranai(1)} />
+          ) : (
+            <MyButton title={'+'} backgroundColor="gray" />
+          )}
+          {enable6 ? (
+            <MyButton title={'-'} onPress={() => addUranai(-1)} />
+          ) : (
+            <MyButton title={'-'} backgroundColor="gray" />
+          )}
+        </View>
+        <MyButton title={'next'} onPress={Tap} />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
@@ -220,10 +217,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  wid: {
+    width: 90,
+    textAlign: 'right',
+  },
   text: {
     fontSize: 20,
     fontWeight: 'bold',
     margin: 16,
+    color: 'white',
+  },
+  text2: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    margin: 16,
+    color: 'white',
   },
   blue: {
     color: 'blue',
@@ -241,6 +249,11 @@ const styles = StyleSheet.create({
   },
   uneneble: {
     backgroundColor: 'red',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
 });
 

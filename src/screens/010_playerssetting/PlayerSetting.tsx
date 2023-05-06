@@ -9,8 +9,10 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
+import MyButton from '../../components/MyButton';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'PlayerSetting'>;
@@ -42,6 +44,7 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
     'Bさん',
     'Cさん',
     'Dさん',
+    'Eさん',
   ]);
 
   function onChange(str: string, index: number) {
@@ -67,27 +70,30 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>プレイヤーの設定</Text>
-      <ScrollView style={styles.scrollView}>
-        {isNames.map((name, i) => (
-          <View key={i} style={styles.row}>
-            <TextInput
-              style={[styles.text, styles.rowtext]}
-              onChangeText={str => onChange(str, i)}
-              value={name}
-            />
-            <Text
-              style={[styles.text, styles.rowbutton]}
-              onPress={() => deletePlayer(i)}>
-              削除
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+      <ImageBackground
+        source={require('../../img/役職確認画面.jpeg')}
+        style={styles.image}>
+        <Text style={styles.text2}>【プレイヤーの設定】</Text>
+        <ScrollView style={styles.scrollView}>
+          {isNames.map((name, i) => (
+            <View key={i} style={styles.row}>
+              <TextInput
+                style={[styles.text, styles.rowtext]}
+                onChangeText={str => onChange(str, i)}
+                value={name}
+              />
+              <Text
+                style={[styles.text, styles.rowbutton]}
+                onPress={() => deletePlayer(i)}>
+                削除
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
 
-      <Button title="プレイヤー追加" onPress={addPlayer} />
-
-      <Button title="next" onPress={Tap} />
+        <MyButton title={'プレイヤー追加'} onPress={addPlayer} />
+        <MyButton title={'next'} onPress={Tap} />
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -128,6 +134,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     maxHeight: '60%',
     margin: 10,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  text2: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    margin: 16,
+    color: 'white',
   },
 });
 

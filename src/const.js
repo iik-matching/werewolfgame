@@ -34,3 +34,10 @@ export const ExtentionMessageConst = {
   URANAISI: 'あなたが人狼か人間か、確認したいプレイヤーを1人選んでください',
   KISHI: 'あなたが人狼の襲撃から守りたいプレイヤーを1人選んでください',
 };
+
+export const YakushokuImg = {
+  SIMIN: '../img/市民画像.jpeg',
+  ZINROU: '../img/人狼画像.jpeg',
+  URANAISI: '../img/占い師画像.jpeg',
+  KISHI: '../img/騎士画像.jpeg',
+};
