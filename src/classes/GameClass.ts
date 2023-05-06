@@ -245,7 +245,6 @@ export class GameClass {
           );
         }
         this.asa_dethplayer = this.FinalVoteTargetPlayers[0].getName();
-        this.FinalVoteTargetPlayers = [];
         this.changeFinalVoteFlag(false);
       } else {
         //1人の場合
@@ -267,29 +266,7 @@ export class GameClass {
       this.hantei();
     }
 
-    // //インデックス初期化
-    // var nextStartIndex: number = 0;
-    // if (this.getFinalVoteFlag()) {
-    //   for (var i = 0; i < this.players.length; i++) {
-    //     if (this.getFinalVoteFlag()) {
-    //       if (this.players[i].getIsDeath() == false && !tIndexs.includes(i)) {
-    //         nextStartIndex = i;
-    //         break;
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   for (var i = 0; i < this.players.length; i++) {
-    //     if (
-    //       this.players[i].getIsDeath() == false ||
-    //       this.players[i].getPublicResultFlg()
-    //     ) {
-    //       nextStartIndex = i;
-    //       break;
-    //     }
-    //   }
-    // }
-    // this.nowIndex = nextStartIndex;
+    /// 初期化
 
     //アクション済みのアカウント数
     this.DidActionCount = 0;
@@ -298,6 +275,8 @@ export class GameClass {
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
+
+    this.FinalVoteTargetPlayers = [];
   }
 
   //判定
