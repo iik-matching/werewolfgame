@@ -96,8 +96,6 @@ export class GameClass {
 
   //全てのプレイヤーがアクション済みかの判定
   compareDidActionCountToPlayersCount(): boolean {
-    // console.log('DidActionCount', this.DidActionCount);
-    // console.log('canActionPlayerCount', this.canActionPlayerCount);
     return this.DidActionCount >= this.canActionPlayerCount;
   }
 
@@ -122,24 +120,15 @@ export class GameClass {
       for (var i = 0; i < this.players.length; i++) {
         //人狼に襲撃された場合
         if (this.players[i].getShuugekiFlag() == true) {
-          // console.log(`${this.players[i].getName()}が襲撃されました。`);
           //騎士に守られなかった場合
           if (this.players[i].getKishiFlag() == false) {
-            // console.log('騎士が外しました。');
+            console.log(`${this.players[i].getName()}が襲撃されました。`);
             this.players[i].changeIsDeath(true);
             this.players[i].changePublicResultFlag(true);
             this.yoru_dethplayer = this.players[i].getName();
           } else {
-            // console.log('騎士が守りました。');
+            console.log(`${this.players[i].getName()}を騎士が守りました。`);
           }
-        }
-
-        if (this.players[i].getUranaiFrag() == true) {
-          // console.log(
-          //   `${this.players[i].getName()}は${this.players[
-          //     i
-          //   ].getZinnei()}陣営です。`,
-          // );
         }
       }
     }
@@ -156,23 +145,16 @@ export class GameClass {
       if (this.players[i].getCount() == maxCount) {
         if (this.AsaOrYoru == GameConst.ASA) {
           tIndexs.push(i);
-        } else {
-          // console.log(`${this.players[i].getName()}は怪しまれています。`);
         }
       }
     }
     if (this.AsaOrYoru == GameConst.ASA) {
-      for (var i = 0; i < this.players.length; i++) {
-        // console.log(
-        //   `${this.players[i].getName()}さん: ${this.players[i].getCount()}票`,
-        // );
-      }
       //1人の場合
       if (tIndexs.length == 1) {
         //死刑執行
         this.players[tIndexs[0]].changeIsDeath(true);
         this.players[tIndexs[0]].changePublicResultFlag(true);
-        // console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
+        console.log(this.players[tIndexs[0]].getName() + 'を処刑しました。');
         this.asa_dethplayer = this.players[tIndexs[0]].getName();
       }
       //複数人の場合　決選投票へ
@@ -198,7 +180,6 @@ export class GameClass {
     let simin_num: number = 0;
 
     for (var i = 0; i < this.players.length; i++) {
-      // console.log(this.players[i].getZinnei(), this.players[i].getIsDeath());
       //生存している人の中で陣営人数をカウント
       if (this.players[i].getIsDeath() == false) {
         if (this.players[i].getZinnei() == '人狼') {
@@ -209,20 +190,17 @@ export class GameClass {
       }
     }
 
-    // console.log('人狼陣営人数' + zinrou_num);
-    // console.log('市民陣営人数' + simin_num);
-
-    //人狼陣営が市民陣営以上であれば、ゲーム終了
     if (zinrou_num >= simin_num) {
-      // console.log('人狼の勝利！！ゲーム終了');
+      //人狼陣営が市民陣営以上であれば、ゲーム終了
+      console.log('人狼の勝利！！ゲーム終了');
       this.gameendflag = '1';
     } else if (zinrou_num == 0) {
-      ////人狼が０人であれば、ゲーム終了
-      // console.log('市民勝利！！ゲーム終了');
+      //人狼が０人であれば、ゲーム終了
+      console.log('市民勝利！！ゲーム終了');
       this.gameendflag = '2';
     } else {
-      ////市民が人狼より多い場合引き続きゲーム再開
-      // console.log('引き続きゲームは続きます。');
+      //市民が人狼より多い場合引き続きゲーム再開
+      console.log('引き続きゲームは続きます。');
       this.gameendflag = '0';
     }
     return this.gameendflag;

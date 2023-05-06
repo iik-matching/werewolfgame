@@ -85,11 +85,20 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     game.asa_dethplayer = '';
     game.yoru_dethplayer = 'いません';
     if (game.AsaOrYoru === GameConst.ASA) {
-      console.log(game.getNowPlayer().getName(), '朝のアクションを実行');
+      console.log(
+        '朝のアクション',
+        `${game.getNowPlayer().getName()} >>> ${tName}`,
+      );
       game.asa(tName);
       game.didActionCount();
     } else {
-      console.log(game.getNowPlayer().getName(), '夜のアクションを実行');
+      console.log(
+        '夜のアクション',
+        `${game.getNowPlayer().getName()}(${game
+          .getNowPlayer()
+          .getYakushoku()
+          .getName()}) >>> ${tName}`,
+      );
       game.yoru(tName);
       // 占い師の場合、選択したプレイヤーの役職をアラートで表示
       if (
