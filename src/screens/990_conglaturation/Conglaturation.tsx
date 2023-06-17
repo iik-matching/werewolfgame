@@ -1,7 +1,16 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {SafeAreaView, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import {RootStackParamList} from '../../../App';
+import MyButton from '../../components/MyButton';
 
 //お決まり
 type Props = NativeStackScreenProps<RootStackParamList, 'Conglaturation'>;
@@ -18,12 +27,29 @@ const Conglaturation: React.FC<Props> = ({route, navigation}) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {flag == '1' ? <Text style={styles.greeting}>人狼勝利！！</Text> : <></>}
-      {flag == '2' ? <Text style={styles.greeting}>市民勝利！！</Text> : <></>}
+    <ImageBackground
+      source={
+        flag == '1'
+          ? require('../../img/人狼勝利_背景画像.jpeg')
+          : require('../../img/市民勝利_背景画像.jpeg')
+      }
+      style={styles.image}>
+      <SafeAreaView style={styles.container}>
+        {flag == '1' ? (
+          <Image
+            style={styles.image2}
+            source={require('../../img/人狼勝利.png')}
+          />
+        ) : (
+          <Image
+            style={styles.image2}
+            source={require('../../img/市民勝利.png')}
+          />
+        )}
 
-      <Button title="next" onPress={Tap} />
-    </SafeAreaView>
+        <MyButton title={'next'} onPress={Tap} />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
@@ -37,6 +63,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     margin: 16,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  imageStyle: {
+    width: 573 / 4,
+    height: 610 / 4,
+    marginTop: 50,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  image2: {
+    width: 400,
+    height: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
