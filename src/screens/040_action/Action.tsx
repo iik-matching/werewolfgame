@@ -8,6 +8,7 @@ import {
   View,
   Image,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {
@@ -35,6 +36,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   const ButtonFontColor = game.AsaOrYoru === GameConst.ASA ? 'white' : 'white';
 
   const styles = StyleSheet.create({
+    scrollView: {
+      paddingHorizontal: 90,
+      // backgroundColor: 'red',
+    },
     container: {
       flex: 1,
       backgroundColor: BackgroundColor,
@@ -251,7 +256,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                   {`あなたは「${game.getNowPlayer().getName()}」です。`}
                 </Text>
                 <Text style={styles.text}>{message}</Text>
-                {buttonList}
+                <ScrollView style={styles.scrollView}>{buttonList}</ScrollView>
               </View>
             </ImageBackground>
           ) : (
@@ -269,7 +274,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                 {`あなたは「${game.getNowPlayer().getName()}」です。`}
               </Text>
               <Text style={styles.text}>{message}</Text>
-              {buttonList}
+              <ScrollView style={styles.scrollView}>{buttonList}</ScrollView>
             </View>
           )}
         </View>
@@ -279,10 +284,8 @@ const Action: React.FC<Props> = ({route, navigation}) => {
           source={require('../../img/役職確認画面.jpeg')}
           style={styles.image}>
           <Text style={styles.text2}>【各プレイヤーの役職内訳】</Text>
-          <View>{YakuhokuList}</View>
-          <View>
-            <MyButton title={'next'} onPress={yaku_kakunin_Tap} />
-          </View>
+          <ScrollView>{YakuhokuList}</ScrollView>
+          <MyButton title={'next'} onPress={yaku_kakunin_Tap} />
         </ImageBackground>
       )}
     </SafeAreaView>
