@@ -8,6 +8,8 @@ import {
   View,
   Image,
   ImageBackground,
+  ScrollView,
+  Alert,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {
@@ -15,6 +17,7 @@ import {
   GameConst,
   YakushokuConst,
   YakushokuImg,
+  ZinneiConst,
 } from '../../const';
 import MyButton from '../../components/MyButton';
 import {showAndWaitAlert} from '../../components/MyAlert';
@@ -35,6 +38,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   const ButtonFontColor = game.AsaOrYoru === GameConst.ASA ? 'white' : 'white';
 
   const styles = StyleSheet.create({
+    scrollView: {
+      paddingHorizontal: 90,
+      // backgroundColor: 'red',
+    },
     container: {
       flex: 1,
       backgroundColor: BackgroundColor,
@@ -86,7 +93,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
         <MyButton
           key={i}
           title={player.getName()}
-          onPress={() => Tap(player.getName())}
+          onPress={() => Tap(player.getName(), 1)}
         />,
       );
     }
@@ -100,7 +107,39 @@ const Action: React.FC<Props> = ({route, navigation}) => {
           <MyButton
             key={i}
             title={game.players[i].getName()}
-            onPress={() => Tap(game.players[i].getName())}
+            onPress={() => {
+              if (
+                game.players[i].getYakushoku().getName() !=
+                YakushokuConst.ZINROU
+              ) {
+                Tap(player.getName(), 1);
+              } else {
+                Alert.alert(
+                  '襲撃レベルを選択してください', // アラートのタイトル
+                  '', // アラートのメッセージ
+                  [
+                    {
+                      text: 'キャンセル',
+                      onPress: () => console.log('キャンセルが押されました'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'なんとなく(1票)',
+                      onPress: () => Tap(player.getName(), 1),
+                    },
+                    {
+                      text: 'あえて殺そう(2票)',
+                      onPress: () => Tap(player.getName(), 2),
+                    },
+                    {
+                      text: '殺さないと危険(3票)',
+                      onPress: () => Tap(player.getName(), 3),
+                    },
+                  ],
+                  {cancelable: false}, // （オプション）画面の他の部分をタップしてアラートを閉じることを禁止
+                );
+              }
+            }}
           />,
         );
       }
@@ -129,7 +168,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     }
   };
 
-  const Tap = async (tName: string) => {
+  const Tap = async (tName: string, nAction: number) => {
     //死んだ人の初期化
     game.asa_dethplayer = '';
     game.yoru_dethplayer = 'いません';
@@ -148,7 +187,9 @@ const Action: React.FC<Props> = ({route, navigation}) => {
           .getYakushoku()
           .getName()}) >>> ${tName}`,
       );
-      game.yoru(tName);
+      for (let i = 0; i < nAction; i++) {
+        game.yoru(tName);
+      }
       // 占い師の場合、選択したプレイヤーの役職をアラートで表示
       if (
         game.getNowPlayer().getYakushoku().getName() == YakushokuConst.URANAISI
@@ -160,13 +201,12 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.didActionCount();
     }
 
+    // 全員アクション済みの場合
     if (game.compareDidActionCountToPlayersCount()) {
       /// 次の画面がアクションリザルト画面の場合
       game.shukei();
-      if (game.gameendflag != '0') {
-        /// 次の画面がコングラッチュレーション画面の場合
-        navigation.navigate('Conglaturation', {game});
-      } else if (game.getFinalVoteFlag()) {
+
+      if (game.getFinalVoteFlag()) {
         navigation.navigate('Kakunin', {game});
       } else {
         navigation.navigate('ActionResult', {game});
@@ -259,7 +299,37 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                   {`あなたは「${game.getNowPlayer().getName()}」です。`}
                 </Text>
                 <Text style={styles.text}>{message}</Text>
-                {buttonList}
+                <ScrollView style={styles.scrollView}>
+                  {
+                    // 決選投票の場合
+                    game.getFinalVoteFlag()
+                      ? game.FinalVoteTargetPlayers.map((player, i) => (
+                          <MyButton
+                            key={i}
+                            title={player.getName()}
+                            onPress={() => Tap(player.getName(), 1)}
+                          />
+                        ))
+                      : // 通常の朝の場合
+                        game.players.map((player, i) => {
+                          if (
+                            game.getNowPlayer().getName() != player.getName()
+                          ) {
+                            return (
+                              <MyButton
+                                key={i}
+                                title={player.getName()}
+                                onPress={() => Tap(player.getName(), 1)}
+                              />
+                            );
+                          }
+                          // 条件に一致しない場合は何も返さない
+                          else {
+                            return null;
+                          }
+                        })
+                  }
+                </ScrollView>
               </View>
             </ImageBackground>
           ) : (
@@ -277,7 +347,71 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                 {`あなたは「${game.getNowPlayer().getName()}」です。`}
               </Text>
               <Text style={styles.text2}>{message}</Text>
-              {buttonList}
+              <ScrollView style={styles.scrollView}>
+                {game.players.map((player, i) => {
+                  if (game.getNowPlayer().getName() != player.getName()) {
+                    // 今のプレイヤーが人狼の場合
+                    if (
+                      game.getNowPlayer().getYakushoku().getName() ==
+                      YakushokuConst.ZINROU
+                    ) {
+                      return (
+                        <View
+                          key={i}
+                          style={{display: 'flex', flexDirection: 'row'}}>
+                          <MyButton
+                            key={i}
+                            title={game.players[i].getName()}
+                            backgroundColor={
+                              game.players[i].getYakushoku().getName() ==
+                              YakushokuConst.ZINROU
+                                ? 'red'
+                                : 'blue'
+                            }
+                            onPress={() => {
+                              Alert.alert(
+                                '襲撃レベルを選択してください', // アラートのタイトル
+                                '', // アラートのメッセージ
+                                [
+                                  {
+                                    text: 'キャンセル',
+                                    onPress: () =>
+                                      console.log('キャンセルが押されました'),
+                                    style: 'cancel',
+                                  },
+                                  {
+                                    text: 'なんとなく(1票)',
+                                    onPress: () => Tap(player.getName(), 1),
+                                  },
+                                  {
+                                    text: 'あえて殺そう(2票)',
+                                    onPress: () => Tap(player.getName(), 2),
+                                  },
+                                  {
+                                    text: '殺さないと危険(3票)',
+                                    onPress: () => Tap(player.getName(), 3),
+                                  },
+                                ],
+                                {cancelable: false}, // （オプション）画面の他の部分をタップしてアラートを閉じることを禁止
+                              );
+                            }}
+                          />
+                          <Text>殺意票：{player.getShuugekiCount()}</Text>
+                        </View>
+                      );
+                      // 今のプレイヤーが人狼以外の場合
+                    } else {
+                      return (
+                        <MyButton
+                          key={i}
+                          title={player.getName()}
+                          onPress={() => Tap(player.getName(), 1)}
+                        />
+                      );
+                    }
+                  }
+                })}
+              </ScrollView>
             </View>
           )}
         </View>

@@ -80,7 +80,7 @@ export class JinrouClass extends YakushokuBaseClass {
       //ターゲットの名前の場合
       if (players[i].getName() == tName) {
         //カウントアップ
-        players[i].changeShuugekiFlag(true);
+        players[i].countUpShuugeki();
         break;
       }
     }

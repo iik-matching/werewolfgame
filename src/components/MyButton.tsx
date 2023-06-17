@@ -5,9 +5,11 @@ import {
   Text,
   TouchableOpacityProps,
 } from 'react-native';
+import {IYakushoku} from '../classes/interface';
 
 type MyButtonProps = TouchableOpacityProps & {
   title: string;
+  yakushoku?: IYakushoku;
   backgroundColor?: string;
   textColor?: string;
   minWidth?: number;
