@@ -157,13 +157,12 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.didActionCount();
     }
 
+    // 全員アクション済みの場合
     if (game.compareDidActionCountToPlayersCount()) {
       /// 次の画面がアクションリザルト画面の場合
       game.shukei();
-      if (game.gameendflag != '0') {
-        /// 次の画面がコングラッチュレーション画面の場合
-        navigation.navigate('Conglaturation', {game});
-      } else if (game.getFinalVoteFlag()) {
+
+      if (game.getFinalVoteFlag()) {
         navigation.navigate('Kakunin', {game});
       } else {
         navigation.navigate('ActionResult', {game});

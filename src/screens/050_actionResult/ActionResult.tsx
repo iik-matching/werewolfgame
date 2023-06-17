@@ -23,9 +23,14 @@ const ActionResult: React.FC<Props> = ({route, navigation}) => {
   const {game} = route.params;
 
   function Tap() {
-    navigation.navigate('Kakunin', {
-      game,
-    });
+    // 結果が出ている場合
+    if (game.gameendflag != '0') {
+      navigation.navigate('Conglaturation', {game});
+    } else {
+      navigation.navigate('Kakunin', {
+        game,
+      });
+    }
   }
 
   React.useEffect(() => {
