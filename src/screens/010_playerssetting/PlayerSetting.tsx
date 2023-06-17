@@ -73,7 +73,9 @@ const PlayerSetting: React.FC<Props> = ({route, navigation}) => {
       <ImageBackground
         source={require('../../img/役職確認画面.jpeg')}
         style={styles.image}>
-        <Text style={styles.text2}>【プレイヤーの設定】</Text>
+        <View style={styles.container}>
+          <Text style={styles.text2}>【プレイヤーの設定】</Text>
+        </View>
         <ScrollView style={styles.scrollView}>
           {isNames.map((name, i) => (
             <View key={i} style={styles.row}>
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text2: {
-    fontSize: 25,
+    fontSize: 34,
     fontWeight: 'bold',
     margin: 16,
     color: 'white',

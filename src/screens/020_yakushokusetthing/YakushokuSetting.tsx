@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import {RootStackParamList} from '../../../App';
 import {GameClass} from '../../classes/GameClass';
@@ -159,53 +160,122 @@ const YakushokuSetting: React.FC<Props> = ({route, navigation}) => {
       source={require('../../img/役職確認画面.jpeg')}
       style={styles.image}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.text2}>【役職設定】</Text>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.text2}>【役職設定】</Text>
+            <Text style={styles.text3}>全体人口:{PlayerNames.length}</Text>
+          </View>
+          <View style={styles.setumei_text}>
+            <View style={styles.row}>
+              <Text style={[styles.text, styles.wid]}>市民:{isNSimin}</Text>
+              <MyButton title={'+'} backgroundColor="gray" />
+              <MyButton title={'-'} backgroundColor="gray" />
+            </View>
+            <View style={styles.row}>
+              <Text style={[styles.text, styles.wid]}>人狼:{isNZinrou}</Text>
+              {enable1 ? (
+                <MyButton title={'+'} onPress={() => addZinrou(1)} />
+              ) : (
+                <MyButton title={'+'} backgroundColor="gray" />
+              )}
+              {enable2 ? (
+                <MyButton title={'-'} onPress={() => addZinrou(-1)} />
+              ) : (
+                <MyButton title={'-'} backgroundColor="gray" />
+              )}
+            </View>
+            <View style={styles.row}>
+              <Text style={[styles.text, styles.wid]}>騎士:{isNKishi}</Text>
+              {enable3 ? (
+                <MyButton title={'+'} onPress={() => addKishi(1)} />
+              ) : (
+                <MyButton title={'+'} backgroundColor="gray" />
+              )}
+              {enable4 ? (
+                <MyButton title={'-'} onPress={() => addKishi(-1)} />
+              ) : (
+                <MyButton title={'-'} backgroundColor="gray" />
+              )}
+            </View>
+            <View style={styles.row}>
+              <Text style={[styles.text, styles.wid]}>占い師:{isNUranai}</Text>
+              {enable5 ? (
+                <MyButton title={'+'} onPress={() => addUranai(1)} />
+              ) : (
+                <MyButton title={'+'} backgroundColor="gray" />
+              )}
+              {enable6 ? (
+                <MyButton title={'-'} onPress={() => addUranai(-1)} />
+              ) : (
+                <MyButton title={'-'} backgroundColor="gray" />
+              )}
+            </View>
+          </View>
+          <MyButton title={'next'} onPress={Tap} />
 
-        <Text style={styles.text}>全体人口:{PlayerNames.length}</Text>
-        <View style={styles.row}>
-          <Text style={styles.text}>市民:{isNSimin}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={[styles.text, styles.wid]}>人狼:{isNZinrou}</Text>
-          {enable1 ? (
-            <MyButton title={'+'} onPress={() => addZinrou(1)} />
-          ) : (
-            <MyButton title={'+'} backgroundColor="gray" />
-          )}
-          {enable2 ? (
-            <MyButton title={'-'} onPress={() => addZinrou(-1)} />
-          ) : (
-            <MyButton title={'-'} backgroundColor="gray" />
-          )}
-        </View>
+          <Text style={styles.text2}></Text>
+          <View style={styles.container}>
+            <Text style={styles.text2}>【役職説明】</Text>
+          </View>
+          <Text style={styles.text3}>＜役職一覧（市民陣営）＞</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <ImageBackground
+              source={require('../../img/市民画像.jpeg')}
+              style={styles.yakusyoku_image}></ImageBackground>
+            <View>
+              <Text style={styles.yakusyoku_text}>市民</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.setumei_text}>
+              何も能力を持たない村人サイドのプレイヤーです。できることは、推理と吊る人を決める投票のみです。現在の情報をもとに推理し、村を平和に導きましょう。
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <ImageBackground
+              source={require('../../img/占い師画像.jpeg')}
+              style={styles.yakusyoku_image}></ImageBackground>
+            <View>
+              <Text style={styles.yakusyoku_text}>占い師</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.setumei_text}>
+              夜のターンで、誰か1名を指定して人狼か否かを知ることができます。人狼ゲームで最も重要な役職の１つと言えます。知ることができるのは、人狼であるか、そうでないかの２択なので、占い先が役職持ちであったとしても、占い師は村人としかわかりません。
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <ImageBackground
+              source={require('../../img/騎士画像.jpeg')}
+              style={styles.yakusyoku_image}></ImageBackground>
+            <View>
+              <Text style={styles.yakusyoku_text}>騎士</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.setumei_text}>
+              夜のターンで誰か１人を人狼の襲撃から守ることができます。騎士が守っている人を人狼が襲撃した場合、襲撃は失敗し、翌日犠牲者は発生しません。
+            </Text>
+          </View>
 
-        <View style={styles.row}>
-          <Text style={[styles.text, styles.wid]}>騎士:{isNKishi}</Text>
-          {enable3 ? (
-            <MyButton title={'+'} onPress={() => addKishi(1)} />
-          ) : (
-            <MyButton title={'+'} backgroundColor="gray" />
-          )}
-          {enable4 ? (
-            <MyButton title={'-'} onPress={() => addKishi(-1)} />
-          ) : (
-            <MyButton title={'-'} backgroundColor="gray" />
-          )}
-        </View>
-        <View style={styles.row}>
-          <Text style={[styles.text, styles.wid]}>占い師:{isNUranai}</Text>
-          {enable5 ? (
-            <MyButton title={'+'} onPress={() => addUranai(1)} />
-          ) : (
-            <MyButton title={'+'} backgroundColor="gray" />
-          )}
-          {enable6 ? (
-            <MyButton title={'-'} onPress={() => addUranai(-1)} />
-          ) : (
-            <MyButton title={'-'} backgroundColor="gray" />
-          )}
-        </View>
-        <MyButton title={'next'} onPress={Tap} />
+          <Text></Text>
+          <Text style={styles.text3}>＜役職一覧（人狼陣営）＞</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <ImageBackground
+              source={require('../../img/人狼画像.jpeg')}
+              style={styles.yakusyoku_image}></ImageBackground>
+            <View>
+              <Text style={styles.yakusyoku_text}>人狼</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.setumei_text}>
+              人の皮を被った狼です。夜のパターンで村人を１人襲撃して食い殺します。人狼は人間に対し、１対１では力で勝てますが、相手が村人２人だと勝てません。よって人狼の数と村人の数が同數になるまで、村人に人狼だと悟られないように、夜の間にこっそりと１人ずつ殺していきます。
+            </Text>
+          </View>
+
+          <MyButton title={'next'} onPress={Tap} />
+        </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );
@@ -222,13 +292,19 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   text: {
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 16,
+    color: 'black',
+  },
+  text2: {
+    fontSize: 36,
     fontWeight: 'bold',
     margin: 16,
     color: 'white',
   },
-  text2: {
-    fontSize: 40,
+  text3: {
+    fontSize: 30,
     fontWeight: 'bold',
     margin: 16,
     color: 'white',
@@ -243,6 +319,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 10,
+    justifyContent: 'center', // 水平方向の中央揃え
+    alignItems: 'center', // 垂直方向の中央揃え
   },
   eneble: {
     backgroundColor: 'gray',
@@ -254,6 +332,26 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
+  },
+  yakusyoku_image: {
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    width: 150,
+    height: 150,
+    margin: 16,
+  },
+  setumei_text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 20,
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  yakusyoku_text: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    margin: 16,
+    color: 'white',
   },
 });
 

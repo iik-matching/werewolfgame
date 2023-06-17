@@ -30,7 +30,7 @@ const Action: React.FC<Props> = ({route, navigation}) => {
   // 色設定　朝:夜
   const BackgroundColor =
     game.AsaOrYoru === GameConst.ASA ? '#e1f7fa' : '#57585A';
-  const FontColor = game.AsaOrYoru === GameConst.ASA ? 'black' : 'white';
+  // const FontColor = game.AsaOrYoru === GameConst.ASA ? 'black' : 'white';
   const ButtonColor = game.AsaOrYoru === GameConst.ASA ? 'blue' : 'blue';
   const ButtonFontColor = game.AsaOrYoru === GameConst.ASA ? 'white' : 'white';
 
@@ -39,16 +39,20 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       flex: 1,
       backgroundColor: BackgroundColor,
     },
+    container2: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     main: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
     },
     text: {
-      fontSize: 20,
+      fontSize: 25,
       fontWeight: 'bold',
       margin: 16,
-      color: FontColor,
+      color: 'black',
     },
     text2: {
       fontSize: 25,
@@ -69,6 +73,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     },
     yaku_kakunin_image: {
       color: '#e1f7fa',
+    },
+    BackgroundColor: {
+      backgroundColor: 'white',
+      margin: 16,
     },
   });
 
@@ -257,18 +265,18 @@ const Action: React.FC<Props> = ({route, navigation}) => {
           ) : (
             //夜の場合
             <View style={styles.main}>
-              <Text style={styles.text}>{`ステータス【夜】`}</Text>
-              <Text style={styles.text}>
+              <Text style={styles.text2}>{`ステータス【夜】`}</Text>
+              <Text style={styles.text2}>
                 {`${game.getNowPlayer().getName()}は「${game
                   .getNowPlayer()
                   .getYakushoku()
                   .getName()}」です。`}
               </Text>
               <YakushokuImg></YakushokuImg>
-              <Text style={styles.text}>
+              <Text style={styles.text2}>
                 {`あなたは「${game.getNowPlayer().getName()}」です。`}
               </Text>
-              <Text style={styles.text}>{message}</Text>
+              <Text style={styles.text2}>{message}</Text>
               {buttonList}
             </View>
           )}
@@ -278,8 +286,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
         <ImageBackground
           source={require('../../img/役職確認画面.jpeg')}
           style={styles.image}>
-          <Text style={styles.text2}>【各プレイヤーの役職内訳】</Text>
-          <View>{YakuhokuList}</View>
+          <View style={styles.container2}>
+            <Text style={styles.text2}>【各プレイヤーの役職内訳】</Text>
+          </View>
+          <View style={styles.BackgroundColor}>{YakuhokuList}</View>
           <View>
             <MyButton title={'next'} onPress={yaku_kakunin_Tap} />
           </View>
