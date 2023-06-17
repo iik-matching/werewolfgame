@@ -8,7 +8,8 @@ export class PlayerClass {
   private isDeath: boolean = false;
   private uranaiFlag: boolean = false;
   private kishiFlag: boolean = false;
-  private shuugekiFlag: boolean = false;
+  private isShuugekiFrag: boolean = false;
+  private shuugekiCount: number = 0;
   private publicResultFlag: boolean = false;
 
   constructor(name: string, yakushoku: IYakushoku) {
@@ -36,6 +37,10 @@ export class PlayerClass {
     return this.isDeath;
   }
 
+  getIsShuugekiFrag() {
+    return this.isShuugekiFrag;
+  }
+
   getUranaiFrag() {
     return this.uranaiFlag;
   }
@@ -44,8 +49,8 @@ export class PlayerClass {
     return this.kishiFlag;
   }
 
-  getShuugekiFlag() {
-    return this.shuugekiFlag;
+  getShuugekiCount() {
+    return this.shuugekiCount;
   }
   getPublicResultFlg() {
     return this.publicResultFlag;
@@ -59,11 +64,16 @@ export class PlayerClass {
     this.count = 0;
     this.uranaiFlag = false;
     this.kishiFlag = false;
-    this.shuugekiFlag = false;
+    this.shuugekiCount = 0;
+    this.isShuugekiFrag = false;
   }
 
   changeIsDeath(flag: boolean) {
     this.isDeath = flag;
+  }
+
+  doneShuugeki() {
+    this.isShuugekiFrag = true;
   }
 
   changeUranaiFlag(flag: boolean) {
@@ -74,8 +84,8 @@ export class PlayerClass {
     this.kishiFlag = flag;
   }
 
-  changeShuugekiFlag(flag: boolean) {
-    this.shuugekiFlag = flag;
+  countUpShuugeki() {
+    this.shuugekiCount++;
   }
 
   changePublicResultFlag(flag: boolean) {
