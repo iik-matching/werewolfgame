@@ -201,6 +201,8 @@ const Action: React.FC<Props> = ({route, navigation}) => {
       game.didActionCount();
     }
 
+    game.nextPlayer();
+
     // 全員アクション済みの場合
     if (game.compareDidActionCountToPlayersCount()) {
       /// 次の画面がアクションリザルト画面の場合
@@ -214,7 +216,6 @@ const Action: React.FC<Props> = ({route, navigation}) => {
     } else {
       navigation.navigate('Kakunin', {game});
     }
-    game.nextPlayer();
   };
 
   //「朝or夜」＆役職ごとに定型分を切り替える
