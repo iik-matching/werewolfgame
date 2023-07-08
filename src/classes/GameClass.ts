@@ -54,6 +54,18 @@ export class GameClass {
       // 決選投票の場合
       if (this.FinalVoteFlg) {
         if (this.players[checkIndex].getIsDeath() == false) {
+          console.log(
+            'this.FinalVoteTargetPlayers',
+            this.FinalVoteTargetPlayers,
+          );
+          console.log(
+            'this.players[checkIndex]',
+            this.players[checkIndex].getName(),
+          );
+          console.log(
+            'this.FinalVoteTargetPlayers.includes(this.players[checkIndex])',
+            this.FinalVoteTargetPlayers.includes(this.players[checkIndex]),
+          );
           if (!this.FinalVoteTargetPlayers.includes(this.players[checkIndex])) {
             // この人を次指名する。
             this.nowIndex = checkIndex;
@@ -239,8 +251,13 @@ export class GameClass {
         for (var i = 0; i < this.players.length; i++) {
           if (this.players[i].getCount() == maxCount) {
             if (this.AsaOrYoru == GameConst.ASA) {
+              console.log('maxCount', maxCount);
               tIndexs.push(i);
               this.FinalVoteTargetPlayers.push(this.players[i]);
+              console.log(
+                'this.FinalVoteTargetPlayers2',
+                this.FinalVoteTargetPlayers,
+              );
             } else {
               console.log(`${this.players[i].getName()}は怪しまれています。`);
             }
@@ -284,6 +301,7 @@ export class GameClass {
         }
         this.asa_dethplayer = this.FinalVoteTargetPlayers[0].getName();
         this.changeFinalVoteFlag(false);
+        this.FinalVoteTargetPlayers = [];
       } else {
         //1人の場合
         if (tIndexs.length <= 1) {
@@ -311,8 +329,6 @@ export class GameClass {
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    this.FinalVoteTargetPlayers = [];
   }
 
   //判定
