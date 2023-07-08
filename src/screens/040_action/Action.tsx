@@ -314,7 +314,8 @@ const Action: React.FC<Props> = ({route, navigation}) => {
                       : // 通常の朝の場合
                         game.players.map((player, i) => {
                           if (
-                            game.getNowPlayer().getName() != player.getName()
+                            game.getNowPlayer().getName() != player.getName() &&
+                            player.getIsDeath() == false
                           ) {
                             return (
                               <MyButton
@@ -350,7 +351,10 @@ const Action: React.FC<Props> = ({route, navigation}) => {
               <Text style={styles.text2}>{message}</Text>
               <ScrollView style={styles.scrollView}>
                 {game.players.map((player, i) => {
-                  if (game.getNowPlayer().getName() != player.getName()) {
+                  if (
+                    game.getNowPlayer().getName() != player.getName() &&
+                    player.getIsDeath() == false
+                  ) {
                     // 今のプレイヤーが人狼の場合
                     if (
                       game.getNowPlayer().getYakushoku().getName() ==
