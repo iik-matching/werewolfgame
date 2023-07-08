@@ -284,6 +284,7 @@ export class GameClass {
         }
         this.asa_dethplayer = this.FinalVoteTargetPlayers[0].getName();
         this.changeFinalVoteFlag(false);
+        this.FinalVoteTargetPlayers = [];
       } else {
         //1人の場合
         if (tIndexs.length <= 1) {
@@ -311,8 +312,6 @@ export class GameClass {
     for (var i = 0; i < this.players.length; i++) {
       this.players[i].countInitialize();
     }
-
-    this.FinalVoteTargetPlayers = [];
   }
 
   //判定
